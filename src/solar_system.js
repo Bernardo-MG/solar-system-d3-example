@@ -16,30 +16,17 @@ var config = {
 };
 
 var solar = [
-  { name: "Mercury", tilt: 0.03, radius: 2439.7, period: 58.65, colours: ["#e7e8ec", "#b1adad"] },
-  { name: "Venus", tilt: 2.64, radius: 6051.8, period: -243, colours: ["#f8e2b0", "#d3a567"] },
-  { name: "Earth", tilt: 23.44, radius: 6371, period: 1, colours: ["#9fc164", "#6b93d6"] },
-  { name: "Mars", tilt: 6.68, radius: 3389.5, period: 1.03, colours: ["#ef1501", "#ad0000"] },
-  { name: "Jupiter", tilt: 25.19, radius: 69911, period: 0.41, colours: ["#d8ca9d", "	#a59186"] },
-  { name: "Saturn", tilt: 26.73, radius: 58232, period: 0.44, colours: ["#f4d587", "#f4a587"] },
-  { name: "Uranus", tilt: 82.23, radius: 25362, period: -0.72, colours: ["#e1eeee", "#adb0c3"] },
-  { name: "Neptune", tilt: 28.32, radius: 24622, period: 0.72, colours: ["#85addb", "	#3f54ba"] }
+  { name: "Mercury", tilt: 0.03, radius: 2439.7, period: 58.65 },
+  { name: "Venus", tilt: 2.64, radius: 6051.8, period: -243 },
+  { name: "Earth", tilt: 23.44, radius: 6371, period: 1 },
+  { name: "Mars", tilt: 6.68, radius: 3389.5, period: 1.03 },
+  { name: "Jupiter", tilt: 25.19, radius: 69911, period: 0.41 },
+  { name: "Saturn", tilt: 26.73, radius: 58232, period: 0.44 },
+  { name: "Uranus", tilt: 82.23, radius: 25362, period: -0.72 },
+  { name: "Neptune", tilt: 28.32, radius: 24622, period: 0.72 }
 ];
 
 var planetColor = "#fff";
-
-var definitions = d3.select("svg").append("defs");
-var filter = definitions.append("filter")
-  .attr("id", "glow");
-filter.append("feGaussianBlur")
-  .attr("class", "blur")
-  .attr("stdDeviation", config.glowRadius)
-  .attr("result", "coloredBlur");
-var feMerge = filter.append("feMerge")
-feMerge.append("feMergeNode")
-  .attr("in", "coloredBlur");
-feMerge.append("feMergeNode")
-  .attr("in", "SourceGraphic");
 
 function displayPlanets(cfg, planets) {
   var boundingSize = (width / planets.length) - cfg.padding;
@@ -51,12 +38,6 @@ function displayPlanets(cfg, planets) {
     .attr("transform", (d, i) => "translate(" + [i * (boundingSize + cfg.padding), height / 2] + ")")
     .on("mouseover", showInfo)
     .on("mouseout", hideInfo);
-
-  var boundingRect = boundingArea.append("rect")
-    .attr("class", "bounding-box")
-    .attr("y", -boundingSize / 2)
-    .attr("width", boundingSize)
-    .attr("height", boundingSize);
 
   var info = boundingArea.append("g")
     .attr("transform", "translate(" + [0, (boundingSize / 2) + 18] + ")")

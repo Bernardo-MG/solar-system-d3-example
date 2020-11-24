@@ -11,14 +11,6 @@ svg {
   background-color: black;
 }
 
-.bounding-box {
-  fill: white;
-  fill-opacity: 0;
-  stroke: #fff;
-  stroke-opacity: 0.5;
-  stroke-dasharray: 3, 3;
-}
-
 .label {
   font-family: monospace;
   opacity: 1;
@@ -33,18 +25,9 @@ svg {
   fill: #fff;
 }
 
-.planet circle,
-.graticule {
+.planet circle {
   fill: none;
   stroke: #123;
   stroke-opacity: 0.15;
-}
-
-.planet circle {
   stroke-width: 1px;
-}
-
-.star {
-  fill: white;
-  opacity: 1;
 }
