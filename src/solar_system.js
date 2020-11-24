@@ -74,7 +74,7 @@ function displayPlanets(cfg, planets) {
       .attr("transform", "translate(" + [boundingSize / 2, 0] + ")");
 
     var fill = planet.append("circle")
-      .attr("r", radiusScale(data.radius))
+      .attr("r", boundingSize / 3)
       .style("fill", planetColor);
   }
 }
