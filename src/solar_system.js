@@ -54,6 +54,7 @@ function displayPlanets(cfg, planets) {
 
   var labels = boundingArea.append("text")
     .attr("class", "label")
+    .attr("x", boundingSize / 3)
     .attr("y", -boundingSize / 2)
     .attr("dy", -12)
     .text(d => d.name);
