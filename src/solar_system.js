@@ -32,12 +32,12 @@ function displayPlanets(cfg, planets) {
   var boundingSize = (width / planets.length) - cfg.padding;
 
   var boundingArea = svg.append("g")
+    .attr("id", "solar_system")
     .selectAll("g")
     .data(planets)
     .enter().append("g")
     .attr("transform", (d, i) => "translate(" + [i * (boundingSize + cfg.padding), height / 2] + ")")
-    .on("mouseover", showInfo)
-    .on("mouseout", hideInfo);
+    .on("click", displayPlanetInfo);
 
   var info = boundingArea.append("g")
     .attr("transform", "translate(" + [0, (boundingSize / 2) + 18] + ")")
@@ -77,6 +77,23 @@ function displayPlanets(cfg, planets) {
       .attr("r", boundingSize / 3)
       .style("fill", planetColor);
   }
+}
+
+function displayPlanetInfo(planet) {
+  var boundingSize = (width / solar.length) - config.padding;
+  d3.select("#solar_system").remove();
+  
+  var info = svg.append("g")
+    .attr("transform", "translate(" + [0, (boundingSize / 2) + 18] + ")")
+    .attr("class", "info");
+  info.append("text")
+    .text("Radius: " + planet.radius + "km");
+  info.append("text")
+    .attr("y", 12)
+    .text("Tilt: " + planet.tilt + "°");
+  info.append("text")
+    .attr("y", 24)
+    .text("Day Length: " + planet.period);
 }
 
 function showInfo(d) {
