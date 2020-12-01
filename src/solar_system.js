@@ -58,6 +58,17 @@ function displayPlanets(cfg, planets) {
     planet.append("circle")
       .attr("r", boundingSize / 3)
       .style("fill", planetColor);
+
+    planet.on("mouseover", handleMouseOver)
+      .on("mouseout", handleMouseOut);
+
+    function handleMouseOver(d, i) {
+      d3.select(this).style("cursor", "pointer")
+    }
+
+    function handleMouseOut(d, i) {
+      d3.select(this).style("cursor", "")
+    }
   }
 }
 
