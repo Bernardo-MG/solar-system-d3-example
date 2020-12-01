@@ -39,19 +39,6 @@ function displayPlanets(cfg, planets) {
     .attr("transform", (d, i) => "translate(" + [i * (boundingSize + cfg.padding), height / 2] + ")")
     .on("click", displayPlanetInfo);
 
-  var info = boundingArea.append("g")
-    .attr("transform", "translate(" + [0, (boundingSize / 2) + 18] + ")")
-    .attr("class", "info")
-    .style("opacity", 0);
-  info.append("text")
-    .text(d => "Radius: " + d.radius + "km");
-  info.append("text")
-    .attr("y", 12)
-    .text(d => "Tilt: " + d.tilt + "°");
-  info.append("text")
-    .attr("y", 24)
-    .text(d => "Day Length: " + d.period);
-
   boundingArea.append("text")
     .attr("class", "label")
     .attr("x", boundingSize / 3)
@@ -61,7 +48,7 @@ function displayPlanets(cfg, planets) {
 
   boundingArea.each(function (d) {
     var x = d3.select(this);
-    drawPlanet(x, d);
+    drawPlanet(x);
   });
 
   function drawPlanet(element) {
@@ -93,7 +80,7 @@ function displayPlanetInfo(planet) {
   svg.append("circle")
     .attr("transform", "translate(" + [(boundingSize / 2), (boundingSize / 2)] + ")")
     .attr("r", boundingSize / 3)
-    .style("stroke", planetColor) 
+    .style("stroke", planetColor)
     .style("fill", "none");
 }
 
