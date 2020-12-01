@@ -68,7 +68,7 @@ function displayPlanets(cfg, planets) {
     var planet = element.append("g")
       .attr("transform", "translate(" + [boundingSize / 2, 0] + ")");
 
-    var fill = planet.append("circle")
+    planet.append("circle")
       .attr("r", boundingSize / 3)
       .style("fill", planetColor);
   }
@@ -77,9 +77,9 @@ function displayPlanets(cfg, planets) {
 function displayPlanetInfo(planet) {
   var boundingSize = (width / 3) - config.padding;
   d3.select("#solar_system").remove();
-  
+
   var info = svg.append("g")
-    .attr("transform", "translate(" + [(boundingSize / 2), (boundingSize / 2)] + ")")
+    .attr("transform", "translate(" + [(boundingSize / 2.5), (boundingSize / 2.5)] + ")")
     .attr("class", "info");
   info.append("text")
     .text("Radius: " + planet.radius + "km");
@@ -89,6 +89,12 @@ function displayPlanetInfo(planet) {
   info.append("text")
     .attr("y", 24)
     .text("Day Length: " + planet.period);
+
+  svg.append("circle")
+    .attr("transform", "translate(" + [(boundingSize / 2), (boundingSize / 2)] + ")")
+    .attr("r", boundingSize / 3)
+    .style("stroke", planetColor) 
+    .style("fill", "none");
 }
 
 displayPlanets(config, solar);
