@@ -66,7 +66,6 @@ function displayPlanets(cfg, planets) {
 
   function drawPlanet(element) {
     var planet = element.append("g")
-      .attr("class", "planet")
       .attr("transform", "translate(" + [boundingSize / 2, 0] + ")");
 
     var fill = planet.append("circle")

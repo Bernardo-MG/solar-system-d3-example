@@ -25,9 +25,3 @@ svg {
   fill: #fff;
 }
 
-.planet circle {
-  fill: none;
-  stroke: #123;
-  stroke-opacity: 0.15;
-  stroke-width: 1px;
-}
