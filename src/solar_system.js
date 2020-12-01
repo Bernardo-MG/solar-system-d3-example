@@ -52,23 +52,19 @@ function displayPlanets(cfg, planets) {
     .attr("y", 24)
     .text(d => "Day Length: " + d.period);
 
-  var labels = boundingArea.append("text")
+  boundingArea.append("text")
     .attr("class", "label")
     .attr("x", boundingSize / 3)
     .attr("y", -boundingSize / 2)
     .attr("dy", -12)
     .text(d => d.name);
 
-  var radiusScale = d3.scaleLinear()
-    .domain([0, d3.max(planets, d => d.radius)])
-    .range([0, (boundingSize / 2) - 3]);
-
-  var planets = boundingArea.each(function (d) {
+  boundingArea.each(function (d) {
     var x = d3.select(this);
     drawPlanet(x, d);
   });
 
-  function drawPlanet(element, data) {
+  function drawPlanet(element) {
     var planet = element.append("g")
       .attr("class", "planet")
       .attr("transform", "translate(" + [boundingSize / 2, 0] + ")");
@@ -80,11 +76,11 @@ function displayPlanets(cfg, planets) {
 }
 
 function displayPlanetInfo(planet) {
-  var boundingSize = (width / solar.length) - config.padding;
+  var boundingSize = (width / 3) - config.padding;
   d3.select("#solar_system").remove();
   
   var info = svg.append("g")
-    .attr("transform", "translate(" + [0, (boundingSize / 2) + 18] + ")")
+    .attr("transform", "translate(" + [(boundingSize / 2), (boundingSize / 2)] + ")")
     .attr("class", "info");
   info.append("text")
     .text("Radius: " + planet.radius + "km");
@@ -94,18 +90,6 @@ function displayPlanetInfo(planet) {
   info.append("text")
     .attr("y", 24)
     .text("Day Length: " + planet.period);
-}
-
-function showInfo(d) {
-  d3.select(this).select("g.info")
-    .transition()
-    .style("opacity", 1);
-}
-
-function hideInfo(d) {
-  d3.select(this).select("g.info")
-    .transition()
-    .style("opacity", 0);
 }
 
 displayPlanets(config, solar);
