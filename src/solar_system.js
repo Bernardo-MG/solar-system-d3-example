@@ -28,6 +28,14 @@ var solar = [
 
 var planetColor = "#fff";
 
+function handleMouseOver(d, i) {
+  d3.select(this).style("cursor", "pointer")
+}
+
+function handleMouseOut(d, i) {
+  d3.select(this).style("cursor", "")
+}
+
 function displayPlanets(cfg, planets) {
   var boundingSize = (width / planets.length) - cfg.padding;
 
@@ -37,7 +45,7 @@ function displayPlanets(cfg, planets) {
     .data(planets)
     .enter().append("g")
     .attr("transform", (d, i) => "translate(" + [i * (boundingSize + cfg.padding), height / 2] + ")")
-    .on("click", displayPlanetInfo);
+    .on("click", (d) => { cleanView(); displayPlanetInfo(d); });
 
   boundingArea.append("text")
     .attr("class", "label")
@@ -61,22 +69,23 @@ function displayPlanets(cfg, planets) {
 
     planet.on("mouseover", handleMouseOver)
       .on("mouseout", handleMouseOut);
-
-    function handleMouseOver(d, i) {
-      d3.select(this).style("cursor", "pointer")
-    }
-
-    function handleMouseOut(d, i) {
-      d3.select(this).style("cursor", "")
-    }
   }
 }
 
 function displayPlanetInfo(planet) {
   var boundingSize = (width / 3) - config.padding;
-  d3.select("#solar_system").remove();
 
-  var info = svg.append("g")
+  var boundingArea = svg.append("g")
+    .attr("id", "planet_info");
+
+  var back = boundingArea.append("text")
+    .text("Back")
+    .attr("class", "info")
+    .on("mouseover", handleMouseOver)
+    .on("mouseout", handleMouseOut)
+    .on("click", () => { cleanView(); displayPlanets(config, solar); });
+
+  var info = boundingArea.append("g")
     .attr("transform", "translate(" + [(boundingSize / 2.5), (boundingSize / 2.5)] + ")")
     .attr("class", "info");
   info.append("text")
@@ -88,11 +97,16 @@ function displayPlanetInfo(planet) {
     .attr("y", 24)
     .text("Day Length: " + planet.period);
 
-  svg.append("circle")
+  boundingArea.append("circle")
     .attr("transform", "translate(" + [(boundingSize / 2), (boundingSize / 2)] + ")")
     .attr("r", boundingSize / 3)
     .style("stroke", planetColor)
     .style("fill", "none");
+}
+
+function cleanView() {
+  d3.select("#solar_system").remove();
+  d3.select("#planet_info").remove();
 }
 
 displayPlanets(config, solar);
