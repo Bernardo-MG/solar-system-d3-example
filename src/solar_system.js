@@ -111,7 +111,6 @@ function displayPlanets(cfg, planets) {
   boundingArea.append("text")
     .attr("class", "label")
     .attr("transform", "translate(" + [boundingSize / 3, -boundingSize / 2] + ")")
-    .attr("dy", -12)
     .text(d => d.name);
 
   // Planets are drawn
