@@ -110,8 +110,7 @@ function displayPlanets(cfg, planets) {
   // Planet name
   boundingArea.append("text")
     .attr("class", "label")
-    .attr("x", boundingSize / 3)
-    .attr("y", -boundingSize / 2)
+    .attr("transform", "translate(" + [boundingSize / 3, -boundingSize / 2] + ")")
     .attr("dy", -12)
     .text(d => d.name);
 
