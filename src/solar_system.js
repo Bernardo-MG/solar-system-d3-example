@@ -106,7 +106,7 @@ function displayPlanetInfo(planet) {
 
   // Information label
   var info = boundingArea.append("g")
-    .attr("transform", "translate(" + [(boundingSize / 2.5), (boundingSize / 2.5)] + ")")
+    .attr("transform", "translate(" + [boundingSize, (boundingSize / 2.5)] + ")")
     .attr("class", "info");
   info.append("text")
     .text("Radius: " + planet.radius + "km");
