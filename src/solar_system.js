@@ -115,6 +115,7 @@ function displayPlanets(cfg, planets) {
     .attr("dy", -12)
     .text(d => d.name);
 
+  // Planets are drawn
   boundingArea.each(function (d) {
     var x = d3.select(this);
     drawPlanet(x);
@@ -145,6 +146,7 @@ function displayPlanetInfo(planet) {
   var boundingArea = svg.append("g")
     .attr("id", "planet_info");
 
+  // Back button
   var back = boundingArea.append("text")
     .text("Back")
     .attr("class", "info")
@@ -157,6 +159,7 @@ function displayPlanetInfo(planet) {
     .attr("transform", "translate(" + [boundingSize, (boundingSize / 2.5)] + ")")
     .attr("class", "info");
 
+  // Planet info
   planet.data.forEach(function (d, i) {
     info.append("text")
       .attr("y", i * 24)
