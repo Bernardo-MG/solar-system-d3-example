@@ -93,8 +93,8 @@ function handleRevertMouseIcon() {
 /**
  * Displays the received planets list.
  * 
- * @param {*} cfg 
- * @param {*} planets 
+ * @param {*} cfg configuration data
+ * @param {*} planets planets to display
  */
 function displayPlanets(cfg, planets) {
   var boundingSize = (width / planets.length) - cfg.padding;
@@ -118,27 +118,32 @@ function displayPlanets(cfg, planets) {
   // Planets are drawn
   boundingArea.each(function (d) {
     var x = d3.select(this);
-    drawPlanet(x);
+    drawPlanet(x, boundingSize);
   });
+}
 
-  // Draws the planets circles
-  function drawPlanet(element) {
-    var planet = element.append("g")
-      .attr("transform", "translate(" + [boundingSize / 2, 0] + ")");
+/**
+ * Draws a planet circle.
+ * 
+ * @param {*} element elemento where to draw the circle
+ * @param {*} boundingSize size of the bounds
+ */
+function drawPlanet(element, boundingSize) {
+  var planet = element.append("g")
+    .attr("transform", "translate(" + [boundingSize / 2, 0] + ")");
 
-    planet.append("circle")
-      .attr("r", boundingSize / 3)
-      .style("fill", planetColor);
+  planet.append("circle")
+    .attr("r", boundingSize / 3)
+    .style("fill", planetColor);
 
-    planet.on("mouseover", handleShowClickIcon)
-      .on("mouseout", handleRevertMouseIcon);
-  }
+  planet.on("mouseover", handleShowClickIcon)
+    .on("mouseout", handleRevertMouseIcon);
 }
 
 /**
  * Displays the received planet info.
  * 
- * @param {*} planet 
+ * @param {*} planet planet data
  */
 function displayPlanetInfo(planet) {
   var boundingSize = (width / 3) - config.padding;
