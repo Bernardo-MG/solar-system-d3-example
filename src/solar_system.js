@@ -28,14 +28,26 @@ var solar = [
 
 var planetColor = "#fff";
 
-function handleMouseOver(d, i) {
+/**
+ * Changes the cursor to the click icon.
+ */
+function handleShowClickIcon() {
   d3.select(this).style("cursor", "pointer")
 }
 
-function handleMouseOut(d, i) {
+/**
+ * Changers the cursor back to the default icon.
+ */
+function handleRevertMouseIcon() {
   d3.select(this).style("cursor", "")
 }
 
+/**
+ * Displays the received planets list.
+ * 
+ * @param {*} cfg 
+ * @param {*} planets 
+ */
 function displayPlanets(cfg, planets) {
   var boundingSize = (width / planets.length) - cfg.padding;
 
@@ -47,6 +59,7 @@ function displayPlanets(cfg, planets) {
     .attr("transform", (d, i) => "translate(" + [i * (boundingSize + cfg.padding), height / 2] + ")")
     .on("click", (d) => { cleanView(); displayPlanetInfo(d); });
 
+  // Planet name
   boundingArea.append("text")
     .attr("class", "label")
     .attr("x", boundingSize / 3)
@@ -59,6 +72,7 @@ function displayPlanets(cfg, planets) {
     drawPlanet(x);
   });
 
+  // Draws the planets circles
   function drawPlanet(element) {
     var planet = element.append("g")
       .attr("transform", "translate(" + [boundingSize / 2, 0] + ")");
@@ -67,11 +81,16 @@ function displayPlanets(cfg, planets) {
       .attr("r", boundingSize / 3)
       .style("fill", planetColor);
 
-    planet.on("mouseover", handleMouseOver)
-      .on("mouseout", handleMouseOut);
+    planet.on("mouseover", handleShowClickIcon)
+      .on("mouseout", handleRevertMouseIcon);
   }
 }
 
+/**
+ * Displays the received planet info.
+ * 
+ * @param {*} planet 
+ */
 function displayPlanetInfo(planet) {
   var boundingSize = (width / 3) - config.padding;
 
@@ -81,10 +100,11 @@ function displayPlanetInfo(planet) {
   var back = boundingArea.append("text")
     .text("Back")
     .attr("class", "info")
-    .on("mouseover", handleMouseOver)
-    .on("mouseout", handleMouseOut)
+    .on("mouseover", handleShowClickIcon)
+    .on("mouseout", handleRevertMouseIcon)
     .on("click", () => { cleanView(); displayPlanets(config, solar); });
 
+  // Information label
   var info = boundingArea.append("g")
     .attr("transform", "translate(" + [(boundingSize / 2.5), (boundingSize / 2.5)] + ")")
     .attr("class", "info");
@@ -97,6 +117,7 @@ function displayPlanetInfo(planet) {
     .attr("y", 24)
     .text("Day Length: " + planet.period);
 
+  // Planet circle
   boundingArea.append("circle")
     .attr("transform", "translate(" + [(boundingSize / 2), (boundingSize / 2)] + ")")
     .attr("r", boundingSize / 3)
@@ -104,6 +125,9 @@ function displayPlanetInfo(planet) {
     .style("fill", "none");
 }
 
+/**
+ * Cleans up the view.
+ */
 function cleanView() {
   d3.select("#solar_system").remove();
   d3.select("#planet_info").remove();
