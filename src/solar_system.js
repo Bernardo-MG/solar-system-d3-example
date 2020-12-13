@@ -16,14 +16,62 @@ var config = {
 };
 
 var solar = [
-  { name: "Mercury", tilt: 0.03, radius: 2439.7, period: 58.65 },
-  { name: "Venus", tilt: 2.64, radius: 6051.8, period: -243 },
-  { name: "Earth", tilt: 23.44, radius: 6371, period: 1 },
-  { name: "Mars", tilt: 6.68, radius: 3389.5, period: 1.03 },
-  { name: "Jupiter", tilt: 25.19, radius: 69911, period: 0.41 },
-  { name: "Saturn", tilt: 26.73, radius: 58232, period: 0.44 },
-  { name: "Uranus", tilt: 82.23, radius: 25362, period: -0.72 },
-  { name: "Neptune", tilt: 28.32, radius: 24622, period: 0.72 }
+  {
+    name: "Mercury", data: [
+      { id: 'tilt', value: 0.03, label: 'Tilt' },
+      { id: 'radius', value: 2439.7, label: 'Radius' },
+      { id: 'period', value: 58.65, label: 'Period' }
+    ]
+  },
+  {
+    name: "Venus", data: [
+      { id: 'tilt', value: 2.64, label: 'Tilt' },
+      { id: 'radius', value: 6051.8, label: 'Radius' },
+      { id: 'period', value: -243, label: 'Period' }
+    ]
+  },
+  {
+    name: "Earth", data: [
+      { id: 'tilt', value: 23.44, label: 'Tilt' },
+      { id: 'radius', value: 6371, label: 'Radius' },
+      { id: 'period', value: 1, label: 'Period' }
+    ]
+  },
+  {
+    name: "Mars", data: [
+      { id: 'tilt', value: 6.68, label: 'Tilt' },
+      { id: 'radius', value: 3389.5, label: 'Radius' },
+      { id: 'period', value: 1.03, label: 'Period' }
+    ]
+  },
+  {
+    name: "Jupiter", data: [
+      { id: 'tilt', value: 25.19, label: 'Tilt' },
+      { id: 'radius', value: 69911, label: 'Radius' },
+      { id: 'period', value: 0.41, label: 'Period' }
+    ]
+  },
+  {
+    name: "Saturn", data: [
+      { id: 'tilt', value: 26.73, label: 'Tilt' },
+      { id: 'radius', value: 58232, label: 'Radius' },
+      { id: 'period', value: 0.44, label: 'Period' }
+    ]
+  },
+  {
+    name: "Uranus", data: [
+      { id: 'tilt', value: 82.23, label: 'Tilt' },
+      { id: 'radius', value: 25362, label: 'Radius' },
+      { id: 'period', value: -0.72, label: 'Period' }
+    ]
+  },
+  {
+    name: "Neptune", data: [
+      { id: 'tilt', value: 28.32, label: 'Tilt' },
+      { id: 'radius', value: 24622, label: 'Radius' },
+      { id: 'period', value: 0.72, label: 'Period' }
+    ]
+  }
 ];
 
 var planetColor = "#fff";
@@ -108,14 +156,12 @@ function displayPlanetInfo(planet) {
   var info = boundingArea.append("g")
     .attr("transform", "translate(" + [boundingSize, (boundingSize / 2.5)] + ")")
     .attr("class", "info");
-  info.append("text")
-    .text("Radius: " + planet.radius + "km");
-  info.append("text")
-    .attr("y", 12)
-    .text("Tilt: " + planet.tilt + "°");
-  info.append("text")
-    .attr("y", 24)
-    .text("Day Length: " + planet.period);
+
+  planet.data.forEach(function (d, i) {
+    info.append("text")
+      .attr("y", i * 24)
+      .text(d.label + ": " + d.value + "km");
+  });
 
   // Planet circle
   boundingArea.append("circle")
