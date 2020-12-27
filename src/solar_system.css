@@ -28,3 +28,9 @@ body {
   fill: white;
 }
 
+.planet:hover {
+  stroke: black;
+  fill: black;
+  cursor: pointer;
+}
+

@@ -67,20 +67,6 @@ var solar = [
 ];
 
 /**
- * Changes the cursor to the click icon.
- */
-function handleShowClickIcon() {
-  d3.select(this).style("cursor", "pointer")
-}
-
-/**
- * Changers the cursor back to the default icon.
- */
-function handleRevertMouseIcon() {
-  d3.select(this).style("cursor", "")
-}
-
-/**
  * Displays the received planets list.
  * 
  * @param {*} x x axis position
@@ -161,9 +147,6 @@ function drawPlanet(element, xpos, radius) {
   planet.append("circle")
     .attr("class", "planet")
     .attr("r", radius);
-
-  planet.on("mouseover", handleShowClickIcon)
-    .on("mouseout", handleRevertMouseIcon);
 }
 
 /**
@@ -187,8 +170,6 @@ function displayPlanetInfo(x, y, width, height, planet) {
   boundingArea.append("text")
     .text("Back")
     .attr("class", "info")
-    .on("mouseover", handleShowClickIcon)
-    .on("mouseout", handleRevertMouseIcon)
     .on("click", () => { cleanView(); displaySolarSystem(); });
 
   // Information label
