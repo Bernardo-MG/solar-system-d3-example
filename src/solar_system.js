@@ -2,6 +2,7 @@ var w = 960;
 var h = 500;
 
 var svg = d3.select("body").append("svg")
+  .attr("id", "main_view")
   .attr("width", w)
   .attr("height", h)
   .append("g");
