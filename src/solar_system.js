@@ -203,6 +203,7 @@ function displayPlanetInfo(x, y, width, height, planet) {
 
   // Planet circle
   boundingArea.append("circle")
+  .attr("id", "planet_info_circle")
     .attr("transform", "translate(" + [(planetViewWidth / 2), (planetViewWidth / 2)] + ")")
     .attr("r", planetRadius)
     .style("fill", "none");

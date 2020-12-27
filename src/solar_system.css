@@ -8,24 +8,24 @@ body {
 }
 
 #main_view {
-  background-color: black;
+  background-color: white;
 }
 
 .label {
   font-family: monospace;
   opacity: 1;
   font-size: 10px;
-  fill: #fff;
+  fill: black;
 }
 
 .info {
   font-family: monospace;
   opacity: 1;
   font-size: 8px;
-  fill: #fff;
+  fill: black;
 }
 
 circle {
-  fill: #fff;
+  fill:black;
 }
 
