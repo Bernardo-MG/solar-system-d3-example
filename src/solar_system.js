@@ -10,9 +10,7 @@ var svg = d3.select("body").append("svg")
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 var config = {
-  padding: 10,
-  axisMultiplier: 1.4,
-  glowRadius: 2,
+  padding: 10
 };
 
 var solar = [
