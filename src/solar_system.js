@@ -65,8 +65,6 @@ var solar = [
   }
 ];
 
-var planetColor = "#fff";
-
 /**
  * Changes the cursor to the click icon.
  */
@@ -103,8 +101,7 @@ function displaySun(x, y, width, height) {
     .attr("transform", "translate(" + [xpos, ypos] + ")");
 
   sun.append("circle")
-    .attr("r", radius)
-    .style("fill", planetColor);
+    .attr("r", radius);
 }
 
 /**
@@ -160,8 +157,7 @@ function drawPlanet(element, xpos, radius) {
     .attr("transform", "translate(" + [xpos, 0] + ")");
 
   planet.append("circle")
-    .attr("r", radius)
-    .style("fill", planetColor);
+    .attr("r", radius);
 
   planet.on("mouseover", handleShowClickIcon)
     .on("mouseout", handleRevertMouseIcon);
@@ -208,7 +204,6 @@ function displayPlanetInfo(x, y, width, height, planet) {
   boundingArea.append("circle")
     .attr("transform", "translate(" + [(planetViewWidth / 2), (planetViewWidth / 2)] + ")")
     .attr("r", planetRadius)
-    .style("stroke", planetColor)
     .style("fill", "none");
 }
 
