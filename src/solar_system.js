@@ -84,17 +84,46 @@ function handleRevertMouseIcon() {
 /**
  * Displays the received planets list.
  * 
+ * @param {*} x x axis position
+ * @param {*} y y axis position
  * @param {*} width view width
  * @param {*} height view height
  * @param {*} planets planets to display
  */
-function displayPlanets(width, height, planets) {
+function displaySun(x, y, width, height) {
+  var radius = width * 5;
+  var xpos = x - (width * 4);
+  var ypos = height / 2;
+
+  var boundingArea = svg.append("g")
+    .attr("id", "sun")
+    .attr("transform", "translate(" + [x, y] + ")");
+
+  var sun = boundingArea.append("g")
+    .attr("transform", "translate(" + [xpos, ypos] + ")");
+
+  sun.append("circle")
+    .attr("r", radius)
+    .style("fill", planetColor);
+}
+
+/**
+ * Displays the received planets list.
+ * 
+ * @param {*} x x axis position
+ * @param {*} y y axis position
+ * @param {*} width view width
+ * @param {*} height view height
+ * @param {*} planets planets to display
+ */
+function displayPlanets(x, y, width, height, planets) {
   var planetViewWidth = (width / planets.length);
   var planetViewHeight = height / 2;
   var planetRadius = planetViewWidth / 3;
 
-  var boundingArea = svg.append("g")
+  var planetsView = svg.append("g")
     .attr("id", "solar_system")
+    .attr("transform", "translate(" + [x, y] + ")")
     .selectAll("g")
     .data(planets)
     .enter().append("g")
@@ -102,13 +131,13 @@ function displayPlanets(width, height, planets) {
     .on("click", (d) => { cleanView(); displayPlanetInfo(width, height, d); });
 
   // Planet name
-  boundingArea.append("text")
+  planetsView.append("text")
     .attr("class", "label")
     .attr("transform", "translate(" + [planetViewWidth / 3, -planetViewWidth / 2] + ")")
     .text(d => d.name);
 
   // Planets are drawn
-  boundingArea.each(function (d) {
+  planetsView.each(function (d) {
     var x = d3.select(this);
     drawPlanet(x, planetViewWidth / 2, planetRadius);
   });
@@ -153,7 +182,7 @@ function displayPlanetInfo(width, height, planet) {
     .attr("class", "info")
     .on("mouseover", handleShowClickIcon)
     .on("mouseout", handleRevertMouseIcon)
-    .on("click", () => { cleanView(); displayPlanets(width, height, solar); });
+    .on("click", () => { cleanView(); displayPlanets(0, 0, width, height, solar); });
 
   // Information label
   var info = boundingArea.append("g")
@@ -183,4 +212,5 @@ function cleanView() {
   d3.select("#planet_info").remove();
 }
 
-displayPlanets(w, h, solar);
+displaySun(0, 0, (w / 4), h);
+displayPlanets((w / 4), 0, w - (w / 4), h, solar);
