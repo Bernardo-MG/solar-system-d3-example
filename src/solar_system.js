@@ -1,9 +1,9 @@
-var width = 960;
-var height = 500;
+var w = 960;
+var h = 500;
 
 var svg = d3.select("body").append("svg")
-  .attr("width", width)
-  .attr("height", height)
+  .attr("width", w)
+  .attr("height", h)
   .append("g");
 
 var solar = [
@@ -151,7 +151,7 @@ function displayPlanetInfo(planet) {
     .attr("class", "info")
     .on("mouseover", handleShowClickIcon)
     .on("mouseout", handleRevertMouseIcon)
-    .on("click", () => { cleanView(); displayPlanets(width, height, solar); });
+    .on("click", () => { cleanView(); displayPlanets(w, h, solar); });
 
   // Information label
   var info = boundingArea.append("g")
@@ -181,4 +181,4 @@ function cleanView() {
   d3.select("#planet_info").remove();
 }
 
-displayPlanets(width, height, solar);
+displayPlanets(w, h, solar);
