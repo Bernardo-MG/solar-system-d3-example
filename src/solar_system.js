@@ -122,13 +122,13 @@ function displayPlanets(x, y, width, height, planets) {
   var planetRadius = planetViewWidth / 3;
 
   var planetsView = svg.append("g")
-    .attr("id", "solar_system")
+    .attr("id", "planets")
     .attr("transform", "translate(" + [x, y] + ")")
     .selectAll("g")
     .data(planets)
     .enter().append("g")
     .attr("transform", (d, i) => "translate(" + [i * (planetViewWidth), planetViewHeight] + ")")
-    .on("click", (d) => { cleanView(); displayPlanetInfo(width, height, d); });
+    .on("click", (d) => { cleanView(); displayPlanetInfo(width / 2, height / 3, width, height, d); });
 
   // Planet name
   planetsView.append("text")
@@ -143,9 +143,9 @@ function displayPlanets(x, y, width, height, planets) {
   });
 }
 
-function displaySolarSystem(x, y, width, height, planets) {
-  displaySun(x, y, (width / 4), height);
-  displayPlanets((width / 4), y, width - (width / 4), height, planets);
+function displaySolarSystem() {
+  displaySun(0, 0, (w / 4), h);
+  displayPlanets((w / 4), 0, w - (w / 4), h, solar);
 }
 
 /**
@@ -170,24 +170,27 @@ function drawPlanet(element, xpos, radius) {
 /**
  * Displays the received planet info.
  * 
+ * @param {*} x x axis position
+ * @param {*} y y axis position
  * @param {*} width view width
  * @param {*} height view height
  * @param {*} planet planet data
  */
-function displayPlanetInfo(width, height, planet) {
+function displayPlanetInfo(x, y, width, height, planet) {
   var planetViewWidth = (width / 3);
   var planetRadius = planetViewWidth / 3;
 
   var boundingArea = svg.append("g")
-    .attr("id", "planet_info");
+    .attr("id", "planet_info")
+    .attr("transform", "translate(" + [x, y] + ")");
 
   // Back button
-  var back = boundingArea.append("text")
+  boundingArea.append("text")
     .text("Back")
     .attr("class", "info")
     .on("mouseover", handleShowClickIcon)
     .on("mouseout", handleRevertMouseIcon)
-    .on("click", () => { cleanView(); displayPlanets(0, 0, width, height, solar); });
+    .on("click", () => { cleanView(); displaySolarSystem(); });
 
   // Information label
   var info = boundingArea.append("g")
@@ -213,8 +216,9 @@ function displayPlanetInfo(width, height, planet) {
  * Cleans up the view.
  */
 function cleanView() {
-  d3.select("#solar_system").remove();
+  d3.select("#sun").remove();
+  d3.select("#planets").remove();
   d3.select("#planet_info").remove();
 }
 
-displaySolarSystem(0, 0, w, h, solar);
+displaySolarSystem();
