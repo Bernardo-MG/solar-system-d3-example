@@ -15,21 +15,16 @@ body {
   font-family: monospace;
   opacity: 1;
   font-size: 10px;
-  fill: black;
 }
 
 .info {
   font-family: monospace;
   opacity: 1;
   font-size: 8px;
-  fill: black;
 }
 
-circle {
-  fill:black;
-}
-
-#planet_info_circle {
+.planet {
   stroke: black;
+  fill: white;
 }
 

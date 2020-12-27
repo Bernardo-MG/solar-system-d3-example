@@ -102,6 +102,7 @@ function displaySun(x, y, width, height) {
     .attr("transform", "translate(" + [xpos, ypos] + ")");
 
   sun.append("circle")
+    .attr("class", "planet")
     .attr("r", radius);
 }
 
@@ -158,6 +159,7 @@ function drawPlanet(element, xpos, radius) {
     .attr("transform", "translate(" + [xpos, 0] + ")");
 
   planet.append("circle")
+    .attr("class", "planet")
     .attr("r", radius);
 
   planet.on("mouseover", handleShowClickIcon)
@@ -203,7 +205,7 @@ function displayPlanetInfo(x, y, width, height, planet) {
 
   // Planet circle
   boundingArea.append("circle")
-  .attr("id", "planet_info_circle")
+    .attr("class", "planet")
     .attr("transform", "translate(" + [(planetViewWidth / 2), (planetViewWidth / 2)] + ")")
     .attr("r", planetRadius)
     .style("fill", "none");
