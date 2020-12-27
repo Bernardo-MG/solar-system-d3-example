@@ -143,6 +143,11 @@ function displayPlanets(x, y, width, height, planets) {
   });
 }
 
+function displaySolarSystem(x, y, width, height, planets) {
+  displaySun(x, y, (width / 4), height);
+  displayPlanets((width / 4), y, width - (width / 4), height, planets);
+}
+
 /**
  * Draws a planet circle.
  * 
@@ -212,5 +217,4 @@ function cleanView() {
   d3.select("#planet_info").remove();
 }
 
-displaySun(0, 0, (w / 4), h);
-displayPlanets((w / 4), 0, w - (w / 4), h, solar);
+displaySolarSystem(0, 0, w, h, solar);
