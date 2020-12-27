@@ -28,9 +28,13 @@ body {
   fill: white;
 }
 
-.planet:hover {
+#planets .planet:hover {
   stroke: black;
   fill: black;
+  cursor: pointer;
+}
+
+.button:hover {
   cursor: pointer;
 }
 

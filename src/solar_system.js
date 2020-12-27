@@ -170,6 +170,7 @@ function displayPlanetInfo(x, y, width, height, planet) {
   boundingArea.append("text")
     .text("Back")
     .attr("class", "info")
+    .attr("class", "button")
     .on("click", () => { cleanView(); displaySolarSystem(); });
 
   // Information label
