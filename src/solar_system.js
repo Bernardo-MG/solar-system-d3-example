@@ -1,5 +1,5 @@
-var width = 960,
-  height = 500;
+var width = 960;
+var height = 500;
 
 var svg = d3.select("body").append("svg")
   .attr("width", width)
@@ -84,29 +84,33 @@ function handleRevertMouseIcon() {
 /**
  * Displays the received planets list.
  * 
+ * @param {*} width view width
+ * @param {*} height view height
  * @param {*} planets planets to display
  */
-function displayPlanets(planets) {
-  var boundingSize = (width / planets.length);
+function displayPlanets(width, height, planets) {
+  var planetViewWidth = (width / planets.length);
+  var planetViewHeight = height / 2;
+  var planetRadius = planetViewWidth / 3;
 
   var boundingArea = svg.append("g")
     .attr("id", "solar_system")
     .selectAll("g")
     .data(planets)
     .enter().append("g")
-    .attr("transform", (d, i) => "translate(" + [i * (boundingSize), height / 2] + ")")
+    .attr("transform", (d, i) => "translate(" + [i * (planetViewWidth), planetViewHeight] + ")")
     .on("click", (d) => { cleanView(); displayPlanetInfo(d); });
 
   // Planet name
   boundingArea.append("text")
     .attr("class", "label")
-    .attr("transform", "translate(" + [boundingSize / 3, -boundingSize / 2] + ")")
+    .attr("transform", "translate(" + [planetViewWidth / 3, -planetViewWidth / 2] + ")")
     .text(d => d.name);
 
   // Planets are drawn
   boundingArea.each(function (d) {
     var x = d3.select(this);
-    drawPlanet(x, boundingSize);
+    drawPlanet(x, planetViewWidth / 2, planetRadius);
   });
 }
 
@@ -114,14 +118,15 @@ function displayPlanets(planets) {
  * Draws a planet circle.
  * 
  * @param {*} element elemento where to draw the circle
- * @param {*} boundingSize size of the bounds
+ * @param {*} xpos x axis position
+ * @param {*} radius planet radius
  */
-function drawPlanet(element, boundingSize) {
+function drawPlanet(element, xpos, radius) {
   var planet = element.append("g")
-    .attr("transform", "translate(" + [boundingSize / 2, 0] + ")");
+    .attr("transform", "translate(" + [xpos, 0] + ")");
 
   planet.append("circle")
-    .attr("r", boundingSize / 3)
+    .attr("r", radius)
     .style("fill", planetColor);
 
   planet.on("mouseover", handleShowClickIcon)
@@ -134,7 +139,8 @@ function drawPlanet(element, boundingSize) {
  * @param {*} planet planet data
  */
 function displayPlanetInfo(planet) {
-  var boundingSize = (width / 3);
+  var planetViewWidth = (width / 3);
+  var planetRadius = planetViewWidth / 3;
 
   var boundingArea = svg.append("g")
     .attr("id", "planet_info");
@@ -145,24 +151,24 @@ function displayPlanetInfo(planet) {
     .attr("class", "info")
     .on("mouseover", handleShowClickIcon)
     .on("mouseout", handleRevertMouseIcon)
-    .on("click", () => { cleanView(); displayPlanets(solar); });
+    .on("click", () => { cleanView(); displayPlanets(width, height, solar); });
 
   // Information label
   var info = boundingArea.append("g")
-    .attr("transform", "translate(" + [boundingSize, (boundingSize / 2.5)] + ")")
+    .attr("transform", "translate(" + [planetViewWidth, (planetViewWidth / 2.5)] + ")")
     .attr("class", "info");
 
   // Planet info
   planet.data.forEach(function (d, i) {
     info.append("text")
       .attr("y", i * 24)
-      .text(d.label + ": " + d.value + "km");
+      .text(d.label + ": " + d.value);
   });
 
   // Planet circle
   boundingArea.append("circle")
-    .attr("transform", "translate(" + [(boundingSize / 2), (boundingSize / 2)] + ")")
-    .attr("r", boundingSize / 3)
+    .attr("transform", "translate(" + [(planetViewWidth / 2), (planetViewWidth / 2)] + ")")
+    .attr("r", planetRadius)
     .style("stroke", planetColor)
     .style("fill", "none");
 }
@@ -175,4 +181,4 @@ function cleanView() {
   d3.select("#planet_info").remove();
 }
 
-displayPlanets(solar);
+displayPlanets(width, height, solar);
