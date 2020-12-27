@@ -29,3 +29,7 @@ circle {
   fill:black;
 }
 
+#planet_info_circle {
+  stroke: black;
+}
+
