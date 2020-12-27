@@ -9,10 +9,6 @@ var svg = d3.select("body").append("svg")
   .append("g")
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-var config = {
-  padding: 10
-};
-
 var solar = [
   {
     name: "Mercury", data: [
@@ -91,18 +87,17 @@ function handleRevertMouseIcon() {
 /**
  * Displays the received planets list.
  * 
- * @param {*} cfg configuration data
  * @param {*} planets planets to display
  */
-function displayPlanets(cfg, planets) {
-  var boundingSize = (width / planets.length) - cfg.padding;
+function displayPlanets(planets) {
+  var boundingSize = (width / planets.length);
 
   var boundingArea = svg.append("g")
     .attr("id", "solar_system")
     .selectAll("g")
     .data(planets)
     .enter().append("g")
-    .attr("transform", (d, i) => "translate(" + [i * (boundingSize + cfg.padding), height / 2] + ")")
+    .attr("transform", (d, i) => "translate(" + [i * (boundingSize), height / 2] + ")")
     .on("click", (d) => { cleanView(); displayPlanetInfo(d); });
 
   // Planet name
@@ -142,7 +137,7 @@ function drawPlanet(element, boundingSize) {
  * @param {*} planet planet data
  */
 function displayPlanetInfo(planet) {
-  var boundingSize = (width / 3) - config.padding;
+  var boundingSize = (width / 3);
 
   var boundingArea = svg.append("g")
     .attr("id", "planet_info");
@@ -153,7 +148,7 @@ function displayPlanetInfo(planet) {
     .attr("class", "info")
     .on("mouseover", handleShowClickIcon)
     .on("mouseout", handleRevertMouseIcon)
-    .on("click", () => { cleanView(); displayPlanets(config, solar); });
+    .on("click", () => { cleanView(); displayPlanets(solar); });
 
   // Information label
   var info = boundingArea.append("g")
@@ -183,4 +178,4 @@ function cleanView() {
   d3.select("#planet_info").remove();
 }
 
-displayPlanets(config, solar);
+displayPlanets(solar);
