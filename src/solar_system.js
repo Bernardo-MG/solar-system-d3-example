@@ -99,7 +99,7 @@ function displayPlanets(width, height, planets) {
     .data(planets)
     .enter().append("g")
     .attr("transform", (d, i) => "translate(" + [i * (planetViewWidth), planetViewHeight] + ")")
-    .on("click", (d) => { cleanView(); displayPlanetInfo(d); });
+    .on("click", (d) => { cleanView(); displayPlanetInfo(width, height, d); });
 
   // Planet name
   boundingArea.append("text")
@@ -136,9 +136,11 @@ function drawPlanet(element, xpos, radius) {
 /**
  * Displays the received planet info.
  * 
+ * @param {*} width view width
+ * @param {*} height view height
  * @param {*} planet planet data
  */
-function displayPlanetInfo(planet) {
+function displayPlanetInfo(width, height, planet) {
   var planetViewWidth = (width / 3);
   var planetRadius = planetViewWidth / 3;
 
@@ -151,7 +153,7 @@ function displayPlanetInfo(planet) {
     .attr("class", "info")
     .on("mouseover", handleShowClickIcon)
     .on("mouseout", handleRevertMouseIcon)
-    .on("click", () => { cleanView(); displayPlanets(w, h, solar); });
+    .on("click", () => { cleanView(); displayPlanets(width, height, solar); });
 
   // Information label
   var info = boundingArea.append("g")
