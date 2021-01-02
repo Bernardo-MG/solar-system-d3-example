@@ -43,5 +43,5 @@ The project has been released under the [MIT License][license].
 [license]: http://www.opensource.org/licenses/mit-license.php
 [scm]: https://github.com/Bernardo-MG/solar-system-d3-example
 
-[demo-site]: https://docs.bernardomg.com/solar-system-d3-example
-[demo-site-development]: https://docs.bernardomg.com/development/solar-system-d3-example
+[demo-site]: https://docs.bernardomg.com/solar-system-d3
+[demo-site-development]: https://docs.bernardomg.com/development/solar-system-d3
