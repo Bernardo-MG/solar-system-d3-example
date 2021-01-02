@@ -2,7 +2,17 @@
 
 An interactive graphic of the solar system.
 
-## Other examples
+## Features
+
+- d3 graphics
+
+## Check it
+
+There is an [online demo site][demo-site] which always reflects the latest version, taken from the master branch.
+
+And a [development demo site][demo-site-development], taken from the development branch.
+
+## Other Similar Examples
 
 - [Solar System](https://bl.ocks.org/tlfrd/155feca25ebe85b6f31b56945e912b4e)
 
@@ -32,8 +42,6 @@ The project has been released under the [MIT License][license].
 [issues]: https://github.com/Bernardo-MG/solar-system-d3-example/issues
 [license]: http://www.opensource.org/licenses/mit-license.php
 [scm]: https://github.com/Bernardo-MG/solar-system-d3-example
-
-[dnd5api]: http://www.dnd5eapi.co/
 
 [demo-site]: https://docs.bernardomg.com/solar-system-d3-example
 [demo-site-development]: https://docs.bernardomg.com/development/solar-system-d3-example
