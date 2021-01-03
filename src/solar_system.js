@@ -1,7 +1,7 @@
 var w = 960;
 var h = 500;
 
-var svg = d3.select("body").append("svg")
+var mainView = d3.select("body").append("svg")
   .attr("id", "main_view")
   .attr("width", w)
   .attr("height", h)
@@ -75,12 +75,12 @@ var solar = [
  * @param {*} height view height
  * @param {*} planets planets to display
  */
-function displaySun(x, y, width, height) {
+function displaySun(view, x, y, width, height) {
   var radius = width * 5;
   var xpos = x - (width * 4);
   var ypos = height / 2;
 
-  var boundingArea = svg.append("g")
+  var boundingArea = view.append("g")
     .attr("id", "sun")
     .attr("transform", "translate(" + [x, y] + ")");
 
@@ -101,19 +101,19 @@ function displaySun(x, y, width, height) {
  * @param {*} height view height
  * @param {*} planets planets to display
  */
-function displayPlanets(x, y, width, height, planets) {
+function displayPlanets(view, x, y, width, height, planets) {
   var planetViewWidth = (width / planets.length);
   var planetViewHeight = height / 2;
   var planetRadius = planetViewWidth / 3;
 
-  var planetsView = svg.append("g")
+  var planetsView = view.append("g")
     .attr("id", "planets")
     .attr("transform", "translate(" + [x, y] + ")")
     .selectAll("g")
     .data(planets)
     .enter().append("g")
     .attr("transform", (d, i) => "translate(" + [i * (planetViewWidth), planetViewHeight] + ")")
-    .on("click", (d) => { cleanView(); displayPlanetInfo(width / 2, height / 3, width, height, d); });
+    .on("click", (d) => { cleanView(); displayPlanetInfo(view, width / 2, height / 3, width, height, d); });
 
   // Planet name
   planetsView.append("text")
@@ -128,9 +128,9 @@ function displayPlanets(x, y, width, height, planets) {
   });
 }
 
-function displaySolarSystem() {
-  displaySun(0, 0, (w / 4), h);
-  displayPlanets((w / 4), 0, w - (w / 4), h, solar);
+function displaySolarSystem(view) {
+  displaySun(view, 0, 0, (w / 4), h);
+  displayPlanets(view, (w / 4), 0, w - (w / 4), h, solar);
 }
 
 /**
@@ -158,11 +158,11 @@ function drawPlanet(element, xpos, radius) {
  * @param {*} height view height
  * @param {*} planet planet data
  */
-function displayPlanetInfo(x, y, width, height, planet) {
+function displayPlanetInfo(view, x, y, width, height, planet) {
   var planetViewWidth = (width / 3);
   var planetRadius = planetViewWidth / 3;
 
-  var boundingArea = svg.append("g")
+  var boundingArea = view.append("g")
     .attr("id", "planet_info")
     .attr("transform", "translate(" + [x, y] + ")");
 
@@ -171,7 +171,7 @@ function displayPlanetInfo(x, y, width, height, planet) {
     .text("Back")
     .attr("class", "info")
     .attr("class", "button")
-    .on("click", () => { cleanView(); displaySolarSystem(); });
+    .on("click", () => { cleanView(); displaySolarSystem(view); });
 
   // Information label
   var info = boundingArea.append("g")
@@ -202,4 +202,4 @@ function cleanView() {
   d3.select("#planet_info").remove();
 }
 
-displaySolarSystem();
+displaySolarSystem(mainView);
