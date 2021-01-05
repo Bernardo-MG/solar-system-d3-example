@@ -67,8 +67,9 @@ var solar = [
 ];
 
 /**
- * Displays the received planets list.
+ * Draws the sun in the view.
  * 
+ * @param {*} view where the image will be drawn
  * @param {*} x x axis position
  * @param {*} y y axis position
  * @param {*} width view width
@@ -93,8 +94,9 @@ function displaySun(view, x, y, width, height) {
 }
 
 /**
- * Displays the received planets list.
+ * Draws the planets in the view.
  * 
+ * @param {*} view where the image will be drawn
  * @param {*} x x axis position
  * @param {*} y y axis position
  * @param {*} width view width
@@ -150,7 +152,7 @@ function drawPlanet(element, xpos, radius) {
 }
 
 /**
- * Displays the received planet info.
+ * Displays the planet info.
  * 
  * @param {*} x x axis position
  * @param {*} y y axis position
