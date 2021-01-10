@@ -1,10 +1,5 @@
-var w = 960;
-var h = 500;
-
-var svg = d3.select("body").append("svg")
-  .attr("id", "main_view")
-  .attr("width", w)
-  .attr("height", h)
+var mainView = d3.select("body").append("svg")
+  .attr("id", "mainGraphic")
   .append("g");
 
 var solar = [
@@ -67,24 +62,22 @@ var solar = [
 ];
 
 /**
- * Displays the received planets list.
+ * Draws the sun in the view.
  * 
+ * @param {*} view where the image will be drawn
  * @param {*} x x axis position
  * @param {*} y y axis position
  * @param {*} width view width
  * @param {*} height view height
  * @param {*} planets planets to display
  */
-function displaySun(x, y, width, height) {
+function displaySun(view, width, height) {
   var radius = width * 5;
-  var xpos = x - (width * 4);
+  var xpos = 0 - (width * 4);
   var ypos = height / 2;
 
-  var boundingArea = svg.append("g")
+  var sun = view.append("g")
     .attr("id", "sun")
-    .attr("transform", "translate(" + [x, y] + ")");
-
-  var sun = boundingArea.append("g")
     .attr("transform", "translate(" + [xpos, ypos] + ")");
 
   sun.append("circle")
@@ -93,64 +86,60 @@ function displaySun(x, y, width, height) {
 }
 
 /**
- * Displays the received planets list.
+ * Draws the planets in the view.
  * 
+ * @param {*} view where the image will be drawn
  * @param {*} x x axis position
  * @param {*} y y axis position
  * @param {*} width view width
  * @param {*} height view height
  * @param {*} planets planets to display
  */
-function displayPlanets(x, y, width, height, planets) {
-  var planetViewWidth = (width / planets.length);
-  var planetViewHeight = height / 2;
-  var planetRadius = planetViewWidth / 3;
+function displayPlanets(view, x, y, width, height, planets) {
+  var padding = 10;
+  var margin = 10;
+  var reducedWith = width - margin;
+  var planetViewSide = (reducedWith / planets.length) - padding;
+  var planetRadius = planetViewSide / 2;
 
-  var planetsView = svg.append("g")
+  // General container
+  var planetsView = view.append("g")
     .attr("id", "planets")
-    .attr("transform", "translate(" + [x, y] + ")")
-    .selectAll("g")
+    .attr("transform", "translate(" + [x + margin, y] + ")");
+
+  // Planet container
+  planetsView = planetsView.selectAll("g")
     .data(planets)
     .enter().append("g")
-    .attr("transform", (d, i) => "translate(" + [i * (planetViewWidth), planetViewHeight] + ")")
-    .on("click", (d) => { cleanView(); displayPlanetInfo(width / 2, height / 3, width, height, d); });
+    .attr("transform", (d, i) => "translate(" + [i * (planetViewSide + padding), 0] + ")");
+
+  // Planet circle
+  planetsView.append("circle")
+    .attr("class", "planet")
+    .attr("transform", (d, i) => "translate(" + [planetRadius, 0] + ")")
+    .attr("r", planetRadius)
+    .on("click", (d) => { cleanView(); displayPlanetInfo(view, width / 2, height / 3, width, height, d); });
 
   // Planet name
   planetsView.append("text")
     .attr("class", "label")
-    .attr("transform", "translate(" + [planetViewWidth / 3, -planetViewWidth / 2] + ")")
+    .attr("transform", "translate(" + [0, -(planetRadius + padding)] + ")")
     .text(d => d.name);
-
-  // Planets are drawn
-  planetsView.each(function (d) {
-    var x = d3.select(this);
-    drawPlanet(x, planetViewWidth / 2, planetRadius);
-  });
 }
 
-function displaySolarSystem() {
-  displaySun(0, 0, (w / 4), h);
-  displayPlanets((w / 4), 0, w - (w / 4), h, solar);
-}
+function displaySolarSystem(view) {
+  var mainView = d3.select("svg#mainGraphic");
+  var node = mainView.node();
+  var width = node.clientWidth;
+  var height = node.clientHeight;
+  var sunWidth = (width / 4);
 
-/**
- * Draws a planet circle.
- * 
- * @param {*} element elemento where to draw the circle
- * @param {*} xpos x axis position
- * @param {*} radius planet radius
- */
-function drawPlanet(element, xpos, radius) {
-  var planet = element.append("g")
-    .attr("transform", "translate(" + [xpos, 0] + ")");
-
-  planet.append("circle")
-    .attr("class", "planet")
-    .attr("r", radius);
+  displaySun(view, sunWidth, height);
+  displayPlanets(view, sunWidth, height / 2, width - sunWidth, height, solar);
 }
 
 /**
- * Displays the received planet info.
+ * Displays the planet info.
  * 
  * @param {*} x x axis position
  * @param {*} y y axis position
@@ -158,11 +147,11 @@ function drawPlanet(element, xpos, radius) {
  * @param {*} height view height
  * @param {*} planet planet data
  */
-function displayPlanetInfo(x, y, width, height, planet) {
+function displayPlanetInfo(view, x, y, width, height, planet) {
   var planetViewWidth = (width / 3);
   var planetRadius = planetViewWidth / 3;
 
-  var boundingArea = svg.append("g")
+  var boundingArea = view.append("g")
     .attr("id", "planet_info")
     .attr("transform", "translate(" + [x, y] + ")");
 
@@ -171,7 +160,7 @@ function displayPlanetInfo(x, y, width, height, planet) {
     .text("Back")
     .attr("class", "info")
     .attr("class", "button")
-    .on("click", () => { cleanView(); displaySolarSystem(); });
+    .on("click", () => { cleanView(); displaySolarSystem(view); });
 
   // Information label
   var info = boundingArea.append("g")
@@ -179,11 +168,10 @@ function displayPlanetInfo(x, y, width, height, planet) {
     .attr("class", "info");
 
   // Planet info
-  planet.data.forEach(function (d, i) {
-    info.append("text")
-      .attr("y", i * 24)
-      .text(d.label + ": " + d.value);
-  });
+  info.selectAll("g").data(planet.data)
+    .enter().append("text")
+    .attr("y", (d, i) => i * 24)
+    .text((d) => d.label + ": " + d.value);
 
   // Planet circle
   boundingArea.append("circle")
@@ -202,4 +190,4 @@ function cleanView() {
   d3.select("#planet_info").remove();
 }
 
-displaySolarSystem();
+displaySolarSystem(mainView);
