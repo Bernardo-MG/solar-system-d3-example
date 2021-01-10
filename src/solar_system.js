@@ -1,10 +1,5 @@
-var w = 960;
-var h = 500;
-
 var mainView = d3.select("body").append("svg")
-  .attr("id", "main_view")
-  .attr("width", w)
-  .attr("height", h)
+  .attr("id", "mainGraphic")
   .append("g");
 
 var solar = [
@@ -133,10 +128,14 @@ function displayPlanets(view, x, y, width, height, planets) {
 }
 
 function displaySolarSystem(view) {
-  var sunWidth = (w / 4);
+  var mainView = d3.select("svg#mainGraphic");
+  var node = mainView.node();
+  var width = node.clientWidth;
+  var height = node.clientHeight;
+  var sunWidth = (width / 4);
 
-  displaySun(view, sunWidth, h);
-  displayPlanets(view, sunWidth, h / 2, w - sunWidth, h, solar);
+  displaySun(view, sunWidth, height);
+  displayPlanets(view, sunWidth, height / 2, width - sunWidth, height, solar);
 }
 
 /**
