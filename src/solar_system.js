@@ -76,16 +76,13 @@ var solar = [
  * @param {*} height view height
  * @param {*} planets planets to display
  */
-function displaySun(view, x, y, width, height) {
+function displaySun(view, width, height) {
   var radius = width * 5;
-  var xpos = x - (width * 4);
+  var xpos = 0 - (width * 4);
   var ypos = height / 2;
 
-  var boundingArea = view.append("g")
+  var sun = view.append("g")
     .attr("id", "sun")
-    .attr("transform", "translate(" + [x, y] + ")");
-
-  var sun = boundingArea.append("g")
     .attr("transform", "translate(" + [xpos, ypos] + ")");
 
   sun.append("circle")
@@ -105,8 +102,9 @@ function displaySun(view, x, y, width, height) {
  */
 function displayPlanets(view, x, y, width, height, planets) {
   var planetViewWidth = (width / planets.length);
-  var planetViewHeight = height / 2;
   var planetRadius = planetViewWidth / 3;
+  var planetViewHeight = height / 2;
+  var planetViewSide = planetRadius * 2;
 
   var planetsView = view.append("g")
     .attr("id", "planets")
@@ -114,41 +112,27 @@ function displayPlanets(view, x, y, width, height, planets) {
     .selectAll("g")
     .data(planets)
     .enter().append("g")
-    .attr("transform", (d, i) => "translate(" + [i * (planetViewWidth), planetViewHeight] + ")")
+    .attr("transform", (d, i) => "translate(" + [i * (planetViewSide + 10) + planetRadius + 10, planetViewHeight] + ")")
     .on("click", (d) => { cleanView(); displayPlanetInfo(view, width / 2, height / 3, width, height, d); });
 
   // Planet name
   planetsView.append("text")
     .attr("class", "label")
-    .attr("transform", "translate(" + [planetViewWidth / 3, -planetViewWidth / 2] + ")")
+    .attr("transform", "translate(" + [-planetRadius + 10, -(planetRadius + 10)] + ")")
     .text(d => d.name);
 
   // Planets are drawn
   planetsView.each(function (d) {
     var x = d3.select(this);
-    drawPlanet(x, planetViewWidth / 2, planetRadius);
+    x.append("g").append("circle")
+      .attr("class", "planet")
+      .attr("r", planetRadius);
   });
 }
 
 function displaySolarSystem(view) {
-  displaySun(view, 0, 0, (w / 4), h);
+  displaySun(view, (w / 4), h);
   displayPlanets(view, (w / 4), 0, w - (w / 4), h, solar);
-}
-
-/**
- * Draws a planet circle.
- * 
- * @param {*} element elemento where to draw the circle
- * @param {*} xpos x axis position
- * @param {*} radius planet radius
- */
-function drawPlanet(element, xpos, radius) {
-  var planet = element.append("g")
-    .attr("transform", "translate(" + [xpos, 0] + ")");
-
-  planet.append("circle")
-    .attr("class", "planet")
-    .attr("r", radius);
 }
 
 /**
