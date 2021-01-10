@@ -114,14 +114,14 @@ function displayPlanets(view, x, y, width, height, planets) {
   planetsView = planetsView.selectAll("g")
     .data(planets)
     .enter().append("g")
-    .attr("transform", (d, i) => "translate(" + [i * (planetViewSide + 10), 0] + ")")
-    .on("click", (d) => { cleanView(); displayPlanetInfo(view, width / 2, height / 3, width, height, d); });
+    .attr("transform", (d, i) => "translate(" + [i * (planetViewSide + 10), 0] + ")");
 
   // Planet circle
   planetsView.append("circle")
     .attr("class", "planet")
     .attr("transform", (d, i) => "translate(" + [planetRadius, 0] + ")")
-    .attr("r", planetRadius);
+    .attr("r", planetRadius)
+    .on("click", (d) => { cleanView(); displayPlanetInfo(view, width / 2, height / 3, width, height, d); });
 
   // Planet name
   planetsView.append("text")
