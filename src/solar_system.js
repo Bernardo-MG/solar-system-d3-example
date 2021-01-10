@@ -117,7 +117,7 @@ function displayPlanets(view, x, y, width, height, planets) {
     .attr("transform", (d, i) => "translate(" + [i * (planetViewSide + 10), 0] + ")")
     .on("click", (d) => { cleanView(); displayPlanetInfo(view, width / 2, height / 3, width, height, d); });
 
-  // Planets are drawn
+  // Planet circle
   planetsView.append("circle")
     .attr("class", "planet")
     .attr("transform", (d, i) => "translate(" + [planetRadius, 0] + ")")
