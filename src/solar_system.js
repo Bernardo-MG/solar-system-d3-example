@@ -103,36 +103,36 @@ function displaySun(view, width, height) {
 function displayPlanets(view, x, y, width, height, planets) {
   var planetViewWidth = (width / planets.length);
   var planetRadius = planetViewWidth / 3;
-  var planetViewHeight = height / 2;
   var planetViewSide = planetRadius * 2;
 
+  // General container
   var planetsView = view.append("g")
     .attr("id", "planets")
-    .attr("transform", "translate(" + [x, y] + ")")
-    .selectAll("g")
+    .attr("transform", "translate(" + [x + 10, y] + ")");
+
+  // Planet container
+  planetsView = planetsView.selectAll("g")
     .data(planets)
     .enter().append("g")
-    .attr("transform", (d, i) => "translate(" + [i * (planetViewSide + 10) + planetRadius + 10, planetViewHeight] + ")")
+    .attr("transform", (d, i) => "translate(" + [i * (planetViewSide + 10), 0] + ")")
     .on("click", (d) => { cleanView(); displayPlanetInfo(view, width / 2, height / 3, width, height, d); });
+
+  // Planets are drawn
+  planetsView.append("circle")
+    .attr("class", "planet")
+    .attr("transform", (d, i) => "translate(" + [planetRadius, 0] + ")")
+    .attr("r", planetRadius);
 
   // Planet name
   planetsView.append("text")
     .attr("class", "label")
-    .attr("transform", "translate(" + [-planetRadius + 10, -(planetRadius + 10)] + ")")
+    .attr("transform", "translate(" + [0, -(planetRadius + 10)] + ")")
     .text(d => d.name);
-
-  // Planets are drawn
-  planetsView.each(function (d) {
-    var x = d3.select(this);
-    x.append("g").append("circle")
-      .attr("class", "planet")
-      .attr("r", planetRadius);
-  });
 }
 
 function displaySolarSystem(view) {
   displaySun(view, (w / 4), h);
-  displayPlanets(view, (w / 4), 0, w - (w / 4), h, solar);
+  displayPlanets(view, (w / 4), h/2, w - (w / 4), h, solar);
 }
 
 /**
