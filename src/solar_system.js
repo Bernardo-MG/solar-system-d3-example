@@ -101,20 +101,22 @@ function displaySun(view, width, height) {
  * @param {*} planets planets to display
  */
 function displayPlanets(view, x, y, width, height, planets) {
-  var planetViewWidth = (width / planets.length);
-  var planetRadius = planetViewWidth / 3;
-  var planetViewSide = planetRadius * 2;
+  var padding = 10;
+  var margin = 10;
+  var reducedWith = width - margin;
+  var planetViewSide = (reducedWith / planets.length) - padding;
+  var planetRadius = planetViewSide / 2;
 
   // General container
   var planetsView = view.append("g")
     .attr("id", "planets")
-    .attr("transform", "translate(" + [x + 10, y] + ")");
+    .attr("transform", "translate(" + [x + margin, y] + ")");
 
   // Planet container
   planetsView = planetsView.selectAll("g")
     .data(planets)
     .enter().append("g")
-    .attr("transform", (d, i) => "translate(" + [i * (planetViewSide + 10), 0] + ")");
+    .attr("transform", (d, i) => "translate(" + [i * (planetViewSide + padding), 0] + ")");
 
   // Planet circle
   planetsView.append("circle")
@@ -126,7 +128,7 @@ function displayPlanets(view, x, y, width, height, planets) {
   // Planet name
   planetsView.append("text")
     .attr("class", "label")
-    .attr("transform", "translate(" + [0, -(planetRadius + 10)] + ")")
+    .attr("transform", "translate(" + [0, -(planetRadius + padding)] + ")")
     .text(d => d.name);
 }
 
