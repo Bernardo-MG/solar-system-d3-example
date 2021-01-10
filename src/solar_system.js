@@ -131,8 +131,10 @@ function displayPlanets(view, x, y, width, height, planets) {
 }
 
 function displaySolarSystem(view) {
-  displaySun(view, (w / 4), h);
-  displayPlanets(view, (w / 4), h/2, w - (w / 4), h, solar);
+  var sunWidth = (w / 4);
+
+  displaySun(view, sunWidth, h);
+  displayPlanets(view, sunWidth, h / 2, w - sunWidth, h, solar);
 }
 
 /**
@@ -165,11 +167,10 @@ function displayPlanetInfo(view, x, y, width, height, planet) {
     .attr("class", "info");
 
   // Planet info
-  planet.data.forEach(function (d, i) {
-    info.append("text")
-      .attr("y", i * 24)
-      .text(d.label + ": " + d.value);
-  });
+  info.selectAll("g").data(planet.data)
+    .enter().append("text")
+    .attr("y", (d, i) => i * 24)
+    .text((d) => d.label + ": " + d.value);
 
   // Planet circle
   boundingArea.append("circle")
