@@ -38,8 +38,11 @@ body {
   cursor: pointer;
 }
 
-#mainGraphic {
+.graphic_view {
   width: 960px;
   height: 500px;
 }
 
+.centered {
+  transform: translate(0, 50%)
+}

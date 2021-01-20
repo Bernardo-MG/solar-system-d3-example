@@ -1,5 +1,6 @@
 var mainView = d3.select("body").append("svg")
   .attr("id", "mainGraphic")
+  .attr("class", "graphic_view")
   .append("g");
 
 var solar = [
@@ -65,24 +66,21 @@ var solar = [
  * Draws the sun in the view.
  * 
  * @param {*} view where the image will be drawn
- * @param {*} x x axis position
- * @param {*} y y axis position
  * @param {*} width view width
- * @param {*} height view height
- * @param {*} planets planets to display
  */
-function displaySun(view, width, height) {
-  var radius = width * 5;
-  var xpos = 0 - (width * 4);
-  var ypos = height / 2;
+function displaySun(view, width) {
+  var arcGen = d3.arc()
+    .innerRadius(0)
+    .outerRadius(width)
+    .startAngle(0)
+    .endAngle(Math.PI);
 
-  var sun = view.append("g")
+  view
+    .append("path")
     .attr("id", "sun")
-    .attr("transform", "translate(" + [xpos, ypos] + ")");
-
-  sun.append("circle")
-    .attr("class", "planet")
-    .attr("r", radius);
+    .attr("class", "planet centered")
+    .attr("d", arcGen)
+    .attr("stroke-width", 1);
 }
 
 /**
