@@ -132,7 +132,7 @@ function displaySolarSystem(view) {
   var height = node.clientHeight;
   var sunWidth = (width / 4);
 
-  displaySun(view, sunWidth, height);
+  displaySun(view, sunWidth);
   displayPlanets(view, sunWidth, height / 2, width - sunWidth, height, solar);
 }
 
