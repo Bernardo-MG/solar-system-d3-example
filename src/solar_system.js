@@ -194,7 +194,7 @@ var node = mainView.node();
 var width = node.clientWidth;
 var height = node.clientHeight;
 
-mainView.attr('viewBox', '0 0 ' + Math.min(width, height) + ' ' + Math.min(width, height))
+mainView.attr('viewBox', '0 0 ' + width + ' ' + height)
   .attr('preserveAspectRatio', 'xMinYMin');
 
 displaySolarSystem(rootView);
