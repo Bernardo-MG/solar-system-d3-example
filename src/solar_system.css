@@ -46,3 +46,7 @@ body {
 .centered {
   transform: translate(0, 50%)
 }
+
+svg text {
+  font-size: 1em;
+}
