@@ -135,7 +135,7 @@ function displaySolarSystem(view) {
   mainView.attr('viewBox', '0 0 ' + Math.min(width, height) + ' ' + Math.min(width, height))
     .attr('preserveAspectRatio', 'xMinYMin');
 
-  var radius = Math.min(width, height);
+  var radius = Math.min(sunWidth, height);
 
   displaySun(view, radius);
   displayPlanets(view, sunWidth, height / 2, width - sunWidth, height, solar);
