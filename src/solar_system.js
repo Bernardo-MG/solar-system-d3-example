@@ -1,4 +1,4 @@
-var mainView = d3.select("body").append("svg")
+var rootView = d3.select("body").append("svg")
   .attr("id", "mainGraphic")
   .attr("class", "graphic_view")
   .append("g");
@@ -189,6 +189,7 @@ function cleanView() {
   d3.select("#planet_info").remove();
 }
 
+var mainView = d3.select("svg#mainGraphic");
 var node = mainView.node();
 var width = node.clientWidth;
 var height = node.clientHeight;
@@ -196,4 +197,4 @@ var height = node.clientHeight;
 mainView.attr('viewBox', '0 0 ' + Math.min(width, height) + ' ' + Math.min(width, height))
   .attr('preserveAspectRatio', 'xMinYMin');
 
-displaySolarSystem(mainView);
+displaySolarSystem(rootView);
