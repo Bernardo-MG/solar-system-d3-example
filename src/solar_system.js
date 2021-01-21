@@ -132,9 +132,6 @@ function displaySolarSystem(view) {
   var height = node.clientHeight;
   var sunWidth = (width / 4);
 
-  mainView.attr('viewBox', '0 0 ' + Math.min(width, height) + ' ' + Math.min(width, height))
-    .attr('preserveAspectRatio', 'xMinYMin');
-
   var radius = Math.min(sunWidth, height);
 
   displaySun(view, radius);
@@ -191,5 +188,12 @@ function cleanView() {
   d3.select("#planets").remove();
   d3.select("#planet_info").remove();
 }
+
+var node = mainView.node();
+var width = node.clientWidth;
+var height = node.clientHeight;
+
+mainView.attr('viewBox', '0 0 ' + Math.min(width, height) + ' ' + Math.min(width, height))
+  .attr('preserveAspectRatio', 'xMinYMin');
 
 displaySolarSystem(mainView);
