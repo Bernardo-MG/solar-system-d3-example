@@ -1,5 +1,6 @@
-var mainView = d3.select("body").append("svg")
+var rootView = d3.select("body").append("svg")
   .attr("id", "mainGraphic")
+  .attr("class", "graphic_view")
   .append("g");
 
 var solar = [
@@ -65,24 +66,21 @@ var solar = [
  * Draws the sun in the view.
  * 
  * @param {*} view where the image will be drawn
- * @param {*} x x axis position
- * @param {*} y y axis position
- * @param {*} width view width
- * @param {*} height view height
- * @param {*} planets planets to display
+ * @param {*} radius sun radius
  */
-function displaySun(view, width, height) {
-  var radius = width * 5;
-  var xpos = 0 - (width * 4);
-  var ypos = height / 2;
+function displaySun(view, radius) {
+  var arcGen = d3.arc()
+    .innerRadius(0)
+    .outerRadius(radius)
+    .startAngle(0)
+    .endAngle(Math.PI);
 
-  var sun = view.append("g")
+  view
+    .append("path")
     .attr("id", "sun")
-    .attr("transform", "translate(" + [xpos, ypos] + ")");
-
-  sun.append("circle")
-    .attr("class", "planet")
-    .attr("r", radius);
+    .attr("class", "planet centered")
+    .attr("d", arcGen)
+    .attr("stroke-width", 1);
 }
 
 /**
@@ -122,8 +120,8 @@ function displayPlanets(view, x, y, width, height, planets) {
 
   // Planet name
   planetsView.append("text")
-    .attr("class", "label")
-    .attr("transform", "translate(" + [0, -(planetRadius + padding)] + ")")
+    .attr("text-anchor", "start")
+    .attr("dy", -(planetRadius + padding))
     .text(d => d.name);
 }
 
@@ -134,7 +132,9 @@ function displaySolarSystem(view) {
   var height = node.clientHeight;
   var sunWidth = (width / 4);
 
-  displaySun(view, sunWidth, height);
+  var radius = Math.min(sunWidth, height);
+
+  displaySun(view, radius);
   displayPlanets(view, sunWidth, height / 2, width - sunWidth, height, solar);
 }
 
@@ -158,7 +158,6 @@ function displayPlanetInfo(view, x, y, width, height, planet) {
   // Back button
   boundingArea.append("text")
     .text("Back")
-    .attr("class", "info")
     .attr("class", "button")
     .on("click", () => { cleanView(); displaySolarSystem(view); });
 
@@ -190,4 +189,12 @@ function cleanView() {
   d3.select("#planet_info").remove();
 }
 
-displaySolarSystem(mainView);
+var mainView = d3.select("svg#mainGraphic");
+var node = mainView.node();
+var width = node.clientWidth;
+var height = node.clientHeight;
+
+mainView.attr('viewBox', '0 0 ' + width + ' ' + height)
+  .attr('preserveAspectRatio', 'xMinYMin');
+
+displaySolarSystem(rootView);

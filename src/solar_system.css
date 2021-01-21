@@ -11,18 +11,6 @@ body {
   background-color: white;
 }
 
-.label {
-  font-family: monospace;
-  opacity: 1;
-  font-size: 10px;
-}
-
-.info {
-  font-family: monospace;
-  opacity: 1;
-  font-size: 8px;
-}
-
 .planet {
   stroke: black;
   fill: white;
@@ -38,8 +26,15 @@ body {
   cursor: pointer;
 }
 
-#mainGraphic {
-  width: 960px;
-  height: 500px;
+.graphic_view {
+  width: 100%;
+  height: 100%;
 }
 
+.centered {
+  transform: translate(0, 50%)
+}
+
+svg text {
+  font-size: 2em;
+}
