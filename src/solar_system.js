@@ -66,12 +66,12 @@ var solar = [
  * Draws the sun in the view.
  * 
  * @param {*} view where the image will be drawn
- * @param {*} width view width
+ * @param {*} radius sun radius
  */
-function displaySun(view, width) {
+function displaySun(view, radius) {
   var arcGen = d3.arc()
     .innerRadius(0)
-    .outerRadius(width)
+    .outerRadius(radius)
     .startAngle(0)
     .endAngle(Math.PI);
 
@@ -132,7 +132,12 @@ function displaySolarSystem(view) {
   var height = node.clientHeight;
   var sunWidth = (width / 4);
 
-  displaySun(view, sunWidth);
+  mainView.attr('viewBox', '0 0 ' + Math.min(width, height) + ' ' + Math.min(width, height))
+    .attr('preserveAspectRatio', 'xMinYMin');
+
+  var radius = Math.min(width, height);
+
+  displaySun(view, radius);
   displayPlanets(view, sunWidth, height / 2, width - sunWidth, height, solar);
 }
 
