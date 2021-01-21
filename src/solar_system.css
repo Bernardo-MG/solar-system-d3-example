@@ -11,18 +11,6 @@ body {
   background-color: white;
 }
 
-.label {
-  font-family: monospace;
-  opacity: 1;
-  font-size: 10px;
-}
-
-.info {
-  font-family: monospace;
-  opacity: 1;
-  font-size: 8px;
-}
-
 .planet {
   stroke: black;
   fill: white;
@@ -48,5 +36,5 @@ body {
 }
 
 svg text {
-  font-size: 1em;
+  font-size: 2em;
 }

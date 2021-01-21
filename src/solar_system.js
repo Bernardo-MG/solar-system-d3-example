@@ -99,7 +99,6 @@ function displayPlanets(view, x, y, width, height, planets) {
   var reducedWith = width - margin;
   var planetViewSide = (reducedWith / planets.length) - padding;
   var planetRadius = planetViewSide / 2;
-  var fontSize = (Math.min(width, height) / 40);
 
   // General container
   var planetsView = view.append("g")
@@ -121,9 +120,7 @@ function displayPlanets(view, x, y, width, height, planets) {
 
   // Planet name
   planetsView.append("text")
-    .attr("class", "label")
     .attr("text-anchor", "start")
-    .style("font-size", fontSize + 'px')
     .attr("dy", -(planetRadius + padding))
     .text(d => d.name);
 }
@@ -164,7 +161,7 @@ function displayPlanetInfo(view, x, y, width, height, planet) {
   // Back button
   boundingArea.append("text")
     .text("Back")
-    .attr("class", "info button")
+    .attr("class", "button")
     .on("click", () => { cleanView(); displaySolarSystem(view); });
 
   // Information label
