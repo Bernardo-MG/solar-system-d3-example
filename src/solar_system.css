@@ -11,17 +11,17 @@ body {
   background-color: white;
 }
 
-.planet {
+.planet, .graticule {
   stroke: black;
   fill: white;
 }
 
-.orbit {
+.orbit  {
   stroke: black;
   fill: none;
 }
 
-#planets .planet:hover {
+.clickable:hover {
   stroke: black;
   fill: black;
   cursor: pointer;

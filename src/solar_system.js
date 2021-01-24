@@ -161,8 +161,31 @@ function displayPlanets(view, x, y, width, height, planets) {
   planetsView.append("circle")
     .attr("class", "planet")
     .attr("transform", (d, i) => "translate(" + [planetRadius, 0] + ")")
-    .attr("r", planetRadius)
-    .on("click", (d) => { cleanView(); displayPlanetInfo(view, width / 2, height / 3, width, height, d); });
+    .attr("r", planetRadius);
+
+  // Graticule
+  var radiusScale = d3.scaleLinear()
+    .domain([0, planetRadius - 1])
+    .range([0, planetRadius]);
+
+  var projection = d3.geoOrthographic()
+    .translate([planetRadius, 0])
+    .scale(radiusScale(planetRadius));
+
+  var path = d3.geoPath()
+    .projection(projection);
+
+  var graticuleScale = d3.scaleLinear()
+    .domain(d3.extent(planets, (d) => planetRadius))
+    .range([20, 10]);
+
+  var graticule = d3.geoGraticule();
+
+  planetsView.append("path")
+    .attr("class", "graticule clickable")
+    .datum(graticule.step([graticuleScale(planetRadius), graticuleScale(planetRadius)]))
+    .attr("d", path)
+    .on("click", (d, i) => { cleanView(); displayPlanetInfo(view, width / 2, height / 3, width, height, planets[i]); });
 
   // Planet name
   planetsView.append("text")
