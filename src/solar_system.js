@@ -9,20 +9,25 @@ var solar = [
       { id: 'tilt', value: 0.03, label: 'Tilt' },
       { id: 'radius', value: 2439.7, label: 'Radius' },
       { id: 'period', value: 58.65, label: 'Period' }
-    ]
+    ],
+    satellites: []
   },
   {
     name: "Venus", data: [
       { id: 'tilt', value: 2.64, label: 'Tilt' },
       { id: 'radius', value: 6051.8, label: 'Radius' },
       { id: 'period', value: -243, label: 'Period' }
-    ]
+    ],
+    satellites: []
   },
   {
     name: "Earth", data: [
       { id: 'tilt', value: 23.44, label: 'Tilt' },
       { id: 'radius', value: 6371, label: 'Radius' },
       { id: 'period', value: 1, label: 'Period' }
+    ],
+    satellites: [
+      { name: 'Moon' }
     ]
   },
   {
@@ -30,6 +35,10 @@ var solar = [
       { id: 'tilt', value: 6.68, label: 'Tilt' },
       { id: 'radius', value: 3389.5, label: 'Radius' },
       { id: 'period', value: 1.03, label: 'Period' }
+    ],
+    satellites: [
+      { name: 'Phobos' },
+      { name: 'Deimos' }
     ]
   },
   {
@@ -37,6 +46,16 @@ var solar = [
       { id: 'tilt', value: 25.19, label: 'Tilt' },
       { id: 'radius', value: 69911, label: 'Radius' },
       { id: 'period', value: 0.41, label: 'Period' }
+    ],
+    satellites: [
+      { name: 'Metis' },
+      { name: 'Adrastea' },
+      { name: 'Amalthea' },
+      { name: 'Thebe' },
+      { name: 'Io' },
+      { name: 'Europa' },
+      { name: 'Ganymede' },
+      { name: 'Callysto' }
     ]
   },
   {
@@ -44,6 +63,15 @@ var solar = [
       { id: 'tilt', value: 26.73, label: 'Tilt' },
       { id: 'radius', value: 58232, label: 'Radius' },
       { id: 'period', value: 0.44, label: 'Period' }
+    ],
+    satellites: [
+      { name: 'Mimas' },
+      { name: 'Enceladus' },
+      { name: 'Tethys' },
+      { name: 'Dione' },
+      { name: 'Rhea' },
+      { name: 'Titan' },
+      { name: 'Iapetus' }
     ]
   },
   {
@@ -51,6 +79,15 @@ var solar = [
       { id: 'tilt', value: 82.23, label: 'Tilt' },
       { id: 'radius', value: 25362, label: 'Radius' },
       { id: 'period', value: -0.72, label: 'Period' }
+    ],
+    satellites: [
+      { name: 'Cordelia' },
+      { name: 'Ophelia' },
+      { name: 'Bianca' },
+      { name: 'Cressida' },
+      { name: 'Desdemona' },
+      { name: 'Juliet' },
+      { name: 'Portia' }
     ]
   },
   {
@@ -58,6 +95,15 @@ var solar = [
       { id: 'tilt', value: 28.32, label: 'Tilt' },
       { id: 'radius', value: 24622, label: 'Radius' },
       { id: 'period', value: 0.72, label: 'Period' }
+    ],
+    satellites: [
+      { name: 'Naiad' },
+      { name: 'Thalassa' },
+      { name: 'Despina' },
+      { name: 'Galatea' },
+      { name: 'Larissa' },
+      { name: 'Hippocamp' },
+      { name: 'Proteus' }
     ]
   }
 ];
@@ -107,8 +153,8 @@ function displayPlanets(view, x, y, width, height, planets) {
 
   // Planet container
   planetsView = planetsView.selectAll("g")
-    .data(planets)
-    .enter().append("g")
+    .data(planets).enter()
+    .append("g")
     .attr("transform", (d, i) => "translate(" + [i * (planetViewSide + padding), 0] + ")");
 
   // Planet circle
@@ -149,7 +195,7 @@ function displaySolarSystem(view) {
  */
 function displayPlanetInfo(view, x, y, width, height, planet) {
   var planetViewWidth = (width / 3);
-  var planetRadius = planetViewWidth / 3;
+  var planetRadius = planetViewWidth / 30;
 
   var boundingArea = view.append("g")
     .attr("id", "planet_info")
@@ -167,17 +213,36 @@ function displayPlanetInfo(view, x, y, width, height, planet) {
     .attr("class", "info");
 
   // Planet info
-  info.selectAll("g").data(planet.data)
-    .enter().append("text")
+  info.selectAll("g")
+    .data(planet.data).enter()
+    .append("text")
     .attr("y", (d, i) => i * 24)
     .text((d) => d.label + ": " + d.value);
 
+  var planetView = boundingArea.append("g");
+
   // Planet circle
-  boundingArea.append("circle")
+  planetView.append("circle")
+    .attr("id", "planet")
     .attr("class", "planet")
     .attr("transform", "translate(" + [(planetViewWidth / 2), (planetViewWidth / 2)] + ")")
-    .attr("r", planetRadius)
-    .style("fill", "none");
+    .attr("r", planetRadius);
+
+  // Satellite orbit
+  planetView.selectAll("g")
+    .data(planet.satellites).enter()
+    .append("circle")
+    .attr("class", "orbit")
+    .attr("transform", "translate(" + [(planetViewWidth / 2), (planetViewWidth / 2)] + ")")
+    .attr("r", (d, i) => (i + 2) * planetRadius);
+
+  // Satellite point
+  planetView.selectAll("g")
+    .data(planet.satellites).enter()
+    .append("circle")
+    .attr("cx", (d, i) => (i + 2) * planetRadius)
+    .attr("r", planetRadius / 5)
+    .attr("transform", "translate(" + [(planetViewWidth / 2), (planetViewWidth / 2)] + ")")
 }
 
 /**

@@ -16,6 +16,11 @@ body {
   fill: white;
 }
 
+.orbit {
+  stroke: black;
+  fill: none;
+}
+
 #planets .planet:hover {
   stroke: black;
   fill: black;
