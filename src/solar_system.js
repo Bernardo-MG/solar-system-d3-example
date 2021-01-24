@@ -108,6 +108,29 @@ var solar = [
   }
 ];
 
+function getPath(radius) {
+  var radiusScale = d3.scaleLinear()
+    .domain([0, radius])
+    .range([0, radius]);
+
+  var projection = d3.geoOrthographic()
+    .translate([radius, 0])
+    .scale(radiusScale(radius));
+
+  return d3.geoPath()
+    .projection(projection);
+}
+
+function getGraticule(radius) {
+  var graticuleScale = d3.scaleLinear()
+    .domain([0, radius])
+    .range([0, 10]);
+
+  var graticule = d3.geoGraticule();
+
+  return graticule.step([graticuleScale(radius), graticuleScale(radius)]);
+}
+
 /**
  * Draws the sun in the view.
  * 
@@ -164,26 +187,13 @@ function displayPlanets(view, x, y, width, height, planets) {
     .attr("r", planetRadius);
 
   // Graticule
-  var radiusScale = d3.scaleLinear()
-    .domain([0, planetRadius - 1])
-    .range([0, planetRadius]);
+  var path = getPath(planetRadius);
 
-  var projection = d3.geoOrthographic()
-    .translate([planetRadius, 0])
-    .scale(radiusScale(planetRadius));
-
-  var path = d3.geoPath()
-    .projection(projection);
-
-  var graticuleScale = d3.scaleLinear()
-    .domain(d3.extent(planets, (d) => planetRadius))
-    .range([20, 10]);
-
-  var graticule = d3.geoGraticule();
+  var graticule = getGraticule(planetRadius);
 
   planetsView.append("path")
     .attr("class", "graticule clickable")
-    .datum(graticule.step([graticuleScale(planetRadius), graticuleScale(planetRadius)]))
+    .datum(graticule)
     .attr("d", path)
     .on("click", (d, i) => { cleanView(); displayPlanetInfo(view, width / 2, height / 3, width, height, planets[i]); });
 
@@ -250,6 +260,17 @@ function displayPlanetInfo(view, x, y, width, height, planet) {
     .attr("class", "planet")
     .attr("transform", "translate(" + [(planetViewWidth / 2), (planetViewWidth / 2)] + ")")
     .attr("r", planetRadius);
+
+  // Graticule
+  var path = getPath(planetRadius);
+
+  var graticule = getGraticule(planetRadius);
+
+  planetView.append("path")
+    .attr("class", "graticule")
+    .datum(graticule)
+    .attr("transform", "translate(" + [(planetViewWidth / 2) - planetRadius, (planetViewWidth / 2)] + ")")
+    .attr("d", path);
 
   // Satellite orbit
   planetView.selectAll("g")
