@@ -3,64 +3,104 @@ var rootView = d3.select("body").append("svg")
   .attr("class", "graphic_view")
   .append("g");
 
+var svgDefs = rootView.append('defs');
+
+var mainGradient = svgDefs.append('radialGradient')
+  .attr('id', 'sunGradient');
+
+mainGradient.append('stop')
+  .attr('class', 'stop-left')
+  .attr('offset', '0');
+
+mainGradient.append('stop')
+  .attr('class', 'stop-right')
+  .attr('offset', '1');
+
 var solar = [
   {
-    name: "Mercury", data: [
-      { id: 'tilt', value: 0.03, label: 'Tilt' },
-      { id: 'radius', value: 2439.7, label: 'Radius' },
-      { id: 'period', value: 58.65, label: 'Period' }
+    name: "Mercury",
+    satellites: []
+  },
+  {
+    name: "Venus",
+    satellites: []
+  },
+  {
+    name: "Earth",
+    satellites: [
+      { name: 'Moon' }
     ]
   },
   {
-    name: "Venus", data: [
-      { id: 'tilt', value: 2.64, label: 'Tilt' },
-      { id: 'radius', value: 6051.8, label: 'Radius' },
-      { id: 'period', value: -243, label: 'Period' }
+    name: "Mars",
+    satellites: [
+      { name: 'Phobos' },
+      { name: 'Deimos' }
     ]
   },
   {
-    name: "Earth", data: [
-      { id: 'tilt', value: 23.44, label: 'Tilt' },
-      { id: 'radius', value: 6371, label: 'Radius' },
-      { id: 'period', value: 1, label: 'Period' }
+    name: "Jupiter",
+    satellites: [
+      { name: 'Io' },
+      { name: 'Europa' },
+      { name: 'Ganymede' },
+      { name: 'Callisto' }
     ]
   },
   {
-    name: "Mars", data: [
-      { id: 'tilt', value: 6.68, label: 'Tilt' },
-      { id: 'radius', value: 3389.5, label: 'Radius' },
-      { id: 'period', value: 1.03, label: 'Period' }
+    name: "Saturn",
+    satellites: [
+      { name: 'Mimas' },
+      { name: 'Enceladus' },
+      { name: 'Tethys' },
+      { name: 'Dione' },
+      { name: 'Rhea' },
+      { name: 'Titan' },
+      { name: 'Iapetus' }
     ]
   },
   {
-    name: "Jupiter", data: [
-      { id: 'tilt', value: 25.19, label: 'Tilt' },
-      { id: 'radius', value: 69911, label: 'Radius' },
-      { id: 'period', value: 0.41, label: 'Period' }
+    name: "Uranus",
+    satellites: [
+      { name: 'Miranda' },
+      { name: 'Ariel' },
+      { name: 'Umbriel' },
+      { name: 'Titania' },
+      { name: 'Oberon' }
     ]
   },
   {
-    name: "Saturn", data: [
-      { id: 'tilt', value: 26.73, label: 'Tilt' },
-      { id: 'radius', value: 58232, label: 'Radius' },
-      { id: 'period', value: 0.44, label: 'Period' }
-    ]
-  },
-  {
-    name: "Uranus", data: [
-      { id: 'tilt', value: 82.23, label: 'Tilt' },
-      { id: 'radius', value: 25362, label: 'Radius' },
-      { id: 'period', value: -0.72, label: 'Period' }
-    ]
-  },
-  {
-    name: "Neptune", data: [
-      { id: 'tilt', value: 28.32, label: 'Tilt' },
-      { id: 'radius', value: 24622, label: 'Radius' },
-      { id: 'period', value: 0.72, label: 'Period' }
+    name: "Neptune",
+    satellites: [
+      { name: 'Proteus' },
+      { name: 'Triton' },
+      { name: 'Nereid' }
     ]
   }
 ];
+
+function getPath(radius) {
+  var radiusScale = d3.scaleLinear()
+    .domain([0, radius])
+    .range([0, radius]);
+
+  var projection = d3.geoOrthographic()
+    .translate([radius, 0])
+    .scale(radiusScale(radius));
+
+  return d3.geoPath()
+    .projection(projection);
+}
+
+function getGraticule(radius) {
+  var graticuleScale = d3.scaleLinear()
+    .domain([0, radius])
+    .range([0, 10]);
+
+  var graticule = d3.geoGraticule();
+
+  return graticule.step([graticuleScale(radius), graticuleScale(radius)]);
+}
 
 /**
  * Draws the sun in the view.
@@ -78,7 +118,7 @@ function displaySun(view, radius) {
   view
     .append("path")
     .attr("id", "sun")
-    .attr("class", "planet centered")
+    .attr("class", "sun centered")
     .attr("d", arcGen)
     .attr("stroke-width", 1);
 }
@@ -107,16 +147,20 @@ function displayPlanets(view, x, y, width, height, planets) {
 
   // Planet container
   planetsView = planetsView.selectAll("g")
-    .data(planets)
-    .enter().append("g")
+    .data(planets).enter()
+    .append("g")
     .attr("transform", (d, i) => "translate(" + [i * (planetViewSide + padding), 0] + ")");
 
-  // Planet circle
-  planetsView.append("circle")
-    .attr("class", "planet")
-    .attr("transform", (d, i) => "translate(" + [planetRadius, 0] + ")")
-    .attr("r", planetRadius)
-    .on("click", (d) => { cleanView(); displayPlanetInfo(view, width / 2, height / 3, width, height, d); });
+  // Graticule
+  var path = getPath(planetRadius);
+
+  var graticule = getGraticule(planetRadius);
+
+  planetsView.append("path")
+    .attr("class", "graticule clickable")
+    .datum(graticule)
+    .attr("d", path)
+    .on("click", (d, i) => { cleanView(); displayPlanetInfo(view, width / 2, height / 3, width / 3, planets[i]); });
 
   // Planet name
   planetsView.append("text")
@@ -144,12 +188,10 @@ function displaySolarSystem(view) {
  * @param {*} x x axis position
  * @param {*} y y axis position
  * @param {*} width view width
- * @param {*} height view height
  * @param {*} planet planet data
  */
-function displayPlanetInfo(view, x, y, width, height, planet) {
-  var planetViewWidth = (width / 3);
-  var planetRadius = planetViewWidth / 3;
+function displayPlanetInfo(view, x, y, width, planet) {
+  var planetRadius = width / 10;
 
   var boundingArea = view.append("g")
     .attr("id", "planet_info")
@@ -163,21 +205,57 @@ function displayPlanetInfo(view, x, y, width, height, planet) {
 
   // Information label
   var info = boundingArea.append("g")
-    .attr("transform", "translate(" + [planetViewWidth, (planetViewWidth / 2.5)] + ")")
+    .attr("id", "planet_data")
+    .attr("transform", "translate(" + [width, (width / 2.5)] + ")")
     .attr("class", "info");
 
-  // Planet info
-  info.selectAll("g").data(planet.data)
-    .enter().append("text")
-    .attr("y", (d, i) => i * 24)
-    .text((d) => d.label + ": " + d.value);
+  var planetView = boundingArea.append("g");
 
-  // Planet circle
-  boundingArea.append("circle")
-    .attr("class", "planet")
-    .attr("transform", "translate(" + [(planetViewWidth / 2), (planetViewWidth / 2)] + ")")
-    .attr("r", planetRadius)
-    .style("fill", "none");
+  // Graticule
+  var path = getPath(planetRadius);
+
+  var graticule = getGraticule(planetRadius);
+
+  planetView.append("path")
+    .attr("class", "graticule")
+    .on("mouseover", (d) => handleShowName(planet.name))
+    .on("mouseout", handleHideName)
+    .datum(graticule)
+    .attr("transform", "translate(" + [(width / 2) - planetRadius, (width / 2)] + ")")
+    .attr("d", path);
+
+  // Satellite orbit
+  planetView.selectAll("g")
+    .data(planet.satellites).enter()
+    .append("circle")
+    .attr("class", "orbit")
+    .attr("transform", "translate(" + [(width / 2), (width / 2)] + ")")
+    .attr("r", (d, i) => (i + 2) * planetRadius);
+
+  // Satellite point
+  planetView.selectAll("g")
+    .data(planet.satellites).enter()
+    .append("circle")
+    .attr("id", (d) => "satellite_" + d.name)
+    .on("mouseover", (d) => handleShowName(d.name))
+    .on("mouseout", handleHideName)
+    .attr("cx", (d, i) => (i + 2) * planetRadius)
+    .attr("r", planetRadius / 5)
+    .attr("transform", "translate(" + [(width / 2), (width / 2)] + ")");
+}
+
+function handleShowName(name) {
+  // Specify where to put label of text
+  d3.select("#planet_data")
+    .append("text")
+    .attr("id", "shown_name")
+    .text(function () {
+      return name;  // Value of the text
+    });
+}
+
+function handleHideName() {
+  d3.select("#shown_name").remove();
 }
 
 /**

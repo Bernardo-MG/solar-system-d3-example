@@ -7,16 +7,33 @@ body {
   left: 0;
 }
 
+.stop-left {
+  stop-color: white;
+}
+
+.stop-right {
+  stop-color: grey;
+}
+
 #main_view {
   background-color: white;
 }
 
-.planet {
+.sun, .graticule {
   stroke: black;
   fill: white;
 }
 
-#planets .planet:hover {
+.sun {
+  fill: url(#sunGradient);
+}
+
+.orbit  {
+  stroke: black;
+  fill: none;
+}
+
+.clickable:hover {
   stroke: black;
   fill: black;
   cursor: pointer;
