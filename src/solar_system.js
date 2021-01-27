@@ -223,7 +223,7 @@ function displaySolarSystem(view) {
  * @param {*} planet planet data
  */
 function displayPlanetInfo(view, x, y, width, planet) {
-  var planetRadius = width / 15;
+  var planetRadius = width / 10;
 
   var boundingArea = view.append("g")
     .attr("id", "planet_info")
