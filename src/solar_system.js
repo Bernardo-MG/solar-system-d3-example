@@ -183,12 +183,6 @@ function displayPlanets(view, x, y, width, height, planets) {
     .append("g")
     .attr("transform", (d, i) => "translate(" + [i * (planetViewSide + padding), 0] + ")");
 
-  // Planet circle
-  planetsView.append("circle")
-    .attr("class", "planet")
-    .attr("transform", (d, i) => "translate(" + [planetRadius, 0] + ")")
-    .attr("r", planetRadius);
-
   // Graticule
   var path = getPath(planetRadius);
 
@@ -231,7 +225,7 @@ function displaySolarSystem(view) {
  */
 function displayPlanetInfo(view, x, y, width, height, planet) {
   var planetViewWidth = (width / 3);
-  var planetRadius = planetViewWidth / 30;
+  var planetRadius = planetViewWidth / 15;
 
   var boundingArea = view.append("g")
     .attr("id", "planet_info")
@@ -256,13 +250,6 @@ function displayPlanetInfo(view, x, y, width, height, planet) {
     .text((d) => d.label + ": " + d.value);
 
   var planetView = boundingArea.append("g");
-
-  // Planet circle
-  planetView.append("circle")
-    .attr("id", "planet")
-    .attr("class", "planet")
-    .attr("transform", "translate(" + [(planetViewWidth / 2), (planetViewWidth / 2)] + ")")
-    .attr("r", planetRadius);
 
   // Graticule
   var path = getPath(planetRadius);
