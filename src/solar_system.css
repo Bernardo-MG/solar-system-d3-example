@@ -7,13 +7,25 @@ body {
   left: 0;
 }
 
+.stop-left {
+  stop-color: white;
+}
+
+.stop-right {
+  stop-color: grey;
+}
+
 #main_view {
   background-color: white;
 }
 
-.planet, .graticule {
+.planet, .sun, .graticule {
   stroke: black;
   fill: white;
+}
+
+.sun {
+  fill: url(#sunGradient);
 }
 
 .orbit  {

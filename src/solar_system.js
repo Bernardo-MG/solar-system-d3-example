@@ -3,6 +3,19 @@ var rootView = d3.select("body").append("svg")
   .attr("class", "graphic_view")
   .append("g");
 
+var svgDefs = rootView.append('defs');
+
+var mainGradient = svgDefs.append('radialGradient')
+  .attr('id', 'sunGradient');
+
+mainGradient.append('stop')
+  .attr('class', 'stop-left')
+  .attr('offset', '0');
+
+mainGradient.append('stop')
+  .attr('class', 'stop-right')
+  .attr('offset', '1');
+
 var solar = [
   {
     name: "Mercury", data: [
@@ -147,7 +160,7 @@ function displaySun(view, radius) {
   view
     .append("path")
     .attr("id", "sun")
-    .attr("class", "planet centered")
+    .attr("class", "sun centered")
     .attr("d", arcGen)
     .attr("stroke-width", 1);
 }
