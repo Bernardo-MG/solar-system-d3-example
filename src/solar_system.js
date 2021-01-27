@@ -192,7 +192,7 @@ function displayPlanets(view, x, y, width, height, planets) {
     .attr("class", "graticule clickable")
     .datum(graticule)
     .attr("d", path)
-    .on("click", (d, i) => { cleanView(); displayPlanetInfo(view, width / 2, height / 3, width, height, planets[i]); });
+    .on("click", (d, i) => { cleanView(); displayPlanetInfo(view, width / 2, height / 3, width / 3, planets[i]); });
 
   // Planet name
   planetsView.append("text")
@@ -220,12 +220,10 @@ function displaySolarSystem(view) {
  * @param {*} x x axis position
  * @param {*} y y axis position
  * @param {*} width view width
- * @param {*} height view height
  * @param {*} planet planet data
  */
-function displayPlanetInfo(view, x, y, width, height, planet) {
-  var planetViewWidth = (width / 3);
-  var planetRadius = planetViewWidth / 15;
+function displayPlanetInfo(view, x, y, width, planet) {
+  var planetRadius = width / 15;
 
   var boundingArea = view.append("g")
     .attr("id", "planet_info")
@@ -239,7 +237,7 @@ function displayPlanetInfo(view, x, y, width, height, planet) {
 
   // Information label
   var info = boundingArea.append("g")
-    .attr("transform", "translate(" + [planetViewWidth, (planetViewWidth / 2.5)] + ")")
+    .attr("transform", "translate(" + [width, (width / 2.5)] + ")")
     .attr("class", "info");
 
   // Planet info
@@ -259,7 +257,7 @@ function displayPlanetInfo(view, x, y, width, height, planet) {
   planetView.append("path")
     .attr("class", "graticule")
     .datum(graticule)
-    .attr("transform", "translate(" + [(planetViewWidth / 2) - planetRadius, (planetViewWidth / 2)] + ")")
+    .attr("transform", "translate(" + [(width / 2) - planetRadius, (width / 2)] + ")")
     .attr("d", path);
 
   // Satellite orbit
@@ -267,7 +265,7 @@ function displayPlanetInfo(view, x, y, width, height, planet) {
     .data(planet.satellites).enter()
     .append("circle")
     .attr("class", "orbit")
-    .attr("transform", "translate(" + [(planetViewWidth / 2), (planetViewWidth / 2)] + ")")
+    .attr("transform", "translate(" + [(width / 2), (width / 2)] + ")")
     .attr("r", (d, i) => (i + 2) * planetRadius);
 
   // Satellite point
@@ -276,7 +274,7 @@ function displayPlanetInfo(view, x, y, width, height, planet) {
     .append("circle")
     .attr("cx", (d, i) => (i + 2) * planetRadius)
     .attr("r", planetRadius / 5)
-    .attr("transform", "translate(" + [(planetViewWidth / 2), (planetViewWidth / 2)] + ")")
+    .attr("transform", "translate(" + [(width / 2), (width / 2)] + ")")
 }
 
 /**
