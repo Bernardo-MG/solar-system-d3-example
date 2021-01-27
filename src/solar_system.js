@@ -61,14 +61,10 @@ var solar = [
       { id: 'period', value: 0.41, label: 'Period' }
     ],
     satellites: [
-      { name: 'Metis' },
-      { name: 'Adrastea' },
-      { name: 'Amalthea' },
-      { name: 'Thebe' },
       { name: 'Io' },
       { name: 'Europa' },
       { name: 'Ganymede' },
-      { name: 'Callysto' }
+      { name: 'Callisto' }
     ]
   },
   {
@@ -94,13 +90,11 @@ var solar = [
       { id: 'period', value: -0.72, label: 'Period' }
     ],
     satellites: [
-      { name: 'Cordelia' },
-      { name: 'Ophelia' },
-      { name: 'Bianca' },
-      { name: 'Cressida' },
-      { name: 'Desdemona' },
-      { name: 'Juliet' },
-      { name: 'Portia' }
+      { name: 'Miranda' },
+      { name: 'Ariel' },
+      { name: 'Umbriel' },
+      { name: 'Titania' },
+      { name: 'Oberon' }
     ]
   },
   {
@@ -110,13 +104,9 @@ var solar = [
       { id: 'period', value: 0.72, label: 'Period' }
     ],
     satellites: [
-      { name: 'Naiad' },
-      { name: 'Thalassa' },
-      { name: 'Despina' },
-      { name: 'Galatea' },
-      { name: 'Larissa' },
-      { name: 'Hippocamp' },
-      { name: 'Proteus' }
+      { name: 'Proteus' },
+      { name: 'Triton' },
+      { name: 'Nereid' }
     ]
   }
 ];
