@@ -18,48 +18,28 @@ mainGradient.append('stop')
 
 var solar = [
   {
-    name: "Mercury", data: [
-      { id: 'tilt', value: 0.03, label: 'Tilt' },
-      { id: 'radius', value: 2439.7, label: 'Radius' },
-      { id: 'period', value: 58.65, label: 'Period' }
-    ],
+    name: "Mercury",
     satellites: []
   },
   {
-    name: "Venus", data: [
-      { id: 'tilt', value: 2.64, label: 'Tilt' },
-      { id: 'radius', value: 6051.8, label: 'Radius' },
-      { id: 'period', value: -243, label: 'Period' }
-    ],
+    name: "Venus",
     satellites: []
   },
   {
-    name: "Earth", data: [
-      { id: 'tilt', value: 23.44, label: 'Tilt' },
-      { id: 'radius', value: 6371, label: 'Radius' },
-      { id: 'period', value: 1, label: 'Period' }
-    ],
+    name: "Earth",
     satellites: [
       { name: 'Moon' }
     ]
   },
   {
-    name: "Mars", data: [
-      { id: 'tilt', value: 6.68, label: 'Tilt' },
-      { id: 'radius', value: 3389.5, label: 'Radius' },
-      { id: 'period', value: 1.03, label: 'Period' }
-    ],
+    name: "Mars",
     satellites: [
       { name: 'Phobos' },
       { name: 'Deimos' }
     ]
   },
   {
-    name: "Jupiter", data: [
-      { id: 'tilt', value: 25.19, label: 'Tilt' },
-      { id: 'radius', value: 69911, label: 'Radius' },
-      { id: 'period', value: 0.41, label: 'Period' }
-    ],
+    name: "Jupiter",
     satellites: [
       { name: 'Io' },
       { name: 'Europa' },
@@ -68,11 +48,7 @@ var solar = [
     ]
   },
   {
-    name: "Saturn", data: [
-      { id: 'tilt', value: 26.73, label: 'Tilt' },
-      { id: 'radius', value: 58232, label: 'Radius' },
-      { id: 'period', value: 0.44, label: 'Period' }
-    ],
+    name: "Saturn",
     satellites: [
       { name: 'Mimas' },
       { name: 'Enceladus' },
@@ -84,11 +60,7 @@ var solar = [
     ]
   },
   {
-    name: "Uranus", data: [
-      { id: 'tilt', value: 82.23, label: 'Tilt' },
-      { id: 'radius', value: 25362, label: 'Radius' },
-      { id: 'period', value: -0.72, label: 'Period' }
-    ],
+    name: "Uranus",
     satellites: [
       { name: 'Miranda' },
       { name: 'Ariel' },
@@ -98,11 +70,7 @@ var solar = [
     ]
   },
   {
-    name: "Neptune", data: [
-      { id: 'tilt', value: 28.32, label: 'Tilt' },
-      { id: 'radius', value: 24622, label: 'Radius' },
-      { id: 'period', value: 0.72, label: 'Period' }
-    ],
+    name: "Neptune",
     satellites: [
       { name: 'Proteus' },
       { name: 'Triton' },
@@ -237,15 +205,9 @@ function displayPlanetInfo(view, x, y, width, planet) {
 
   // Information label
   var info = boundingArea.append("g")
+    .attr("id", "planet_data")
     .attr("transform", "translate(" + [width, (width / 2.5)] + ")")
     .attr("class", "info");
-
-  // Planet info
-  info.selectAll("g")
-    .data(planet.data).enter()
-    .append("text")
-    .attr("y", (d, i) => i * 24)
-    .text((d) => d.label + ": " + d.value);
 
   var planetView = boundingArea.append("g");
 
@@ -256,6 +218,8 @@ function displayPlanetInfo(view, x, y, width, planet) {
 
   planetView.append("path")
     .attr("class", "graticule")
+    .on("mouseover", (d) => handleShowName(planet.name))
+    .on("mouseout", handleHideName)
     .datum(graticule)
     .attr("transform", "translate(" + [(width / 2) - planetRadius, (width / 2)] + ")")
     .attr("d", path);
@@ -272,9 +236,26 @@ function displayPlanetInfo(view, x, y, width, planet) {
   planetView.selectAll("g")
     .data(planet.satellites).enter()
     .append("circle")
+    .attr("id", (d) => "satellite_" + d.name)
+    .on("mouseover", (d) => handleShowName(d.name))
+    .on("mouseout", handleHideName)
     .attr("cx", (d, i) => (i + 2) * planetRadius)
     .attr("r", planetRadius / 5)
-    .attr("transform", "translate(" + [(width / 2), (width / 2)] + ")")
+    .attr("transform", "translate(" + [(width / 2), (width / 2)] + ")");
+}
+
+function handleShowName(name) {
+  // Specify where to put label of text
+  d3.select("#planet_data")
+    .append("text")
+    .attr("id", "shown_name")
+    .text(function () {
+      return name;  // Value of the text
+    });
+}
+
+function handleHideName() {
+  d3.select("#shown_name").remove();
 }
 
 /**
