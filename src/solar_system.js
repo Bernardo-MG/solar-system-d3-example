@@ -156,13 +156,13 @@ function displayPlanets(view, x, y, width, height, planets) {
 
   var graticule = getGraticule(planetRadius);
 
-  const index = d3.local(); 
+  const index = d3.local();
 
   var p = planetsView.append("path")
     .attr("class", "graticule clickable")
     .datum(graticule)
     .attr("d", path)
-    .each(function(d, i) { index.set(d, i); })
+    .each(function (d, i) { index.set(d, i); })
     .on("click", (e, d) => { cleanView(); displayPlanetInfo(view, width / 2, height / 3, width / 3, planets[index.get(d)]); });
 
   // Planet name
