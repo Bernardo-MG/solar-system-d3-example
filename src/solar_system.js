@@ -206,12 +206,6 @@ function displayPlanetInfo(view, x, y, width, planet) {
     .attr("class", "button")
     .on("click", () => { cleanView(); displaySolarSystem(view); });
 
-  // Information label
-  var info = boundingArea.append("g")
-    .attr("id", "planet_data")
-    .attr("transform", "translate(" + [width, (width / 2.5)] + ")")
-    .attr("class", "info");
-
   var planetView = boundingArea.append("g");
 
   // Graticule
