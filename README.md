@@ -1,6 +1,6 @@
 # Solar System d3 Example
 
-An interactive graphic of the solar system.
+Small solar system with d3.
 
 ## Features
 
